@@ -67,7 +67,7 @@ public class HTTPPostServer extends Thread {
             msg = "Ta da";
             repo = "";
             if((array = object.optJSONObject("head_commit")) != null){
-                msg = object.getString("message");
+                msg = String.valueOf(object.get("message"));
                 JSONObject commiter = array.optJSONObject("committer");
                 if(commiter != null){
                     name = commiter.getString("name");

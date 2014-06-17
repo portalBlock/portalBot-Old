@@ -25,6 +25,9 @@ import java.util.concurrent.Executors;
  */
 //rand.nextInt(max-min+1)+min
 
+    //http://gdata.youtube.com/feeds/api/videos?q=___QUERY___&alt=json
+    //http://ajax.googleapis.com/ajax/services/search/web?v=1.0&q=___QUERY___
+
 //TODO: Add a .yml parser, Add user permissions for bot management
 //TODO: Add more features(Such as: ping)
 public class PortalBot {

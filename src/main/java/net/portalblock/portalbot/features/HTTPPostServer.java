@@ -62,9 +62,9 @@ public class HTTPPostServer extends Thread {
             JSONObject object = new JSONObject(jsonData);
             JSONObject array;
             String msg, name, repo;
-            name = "";
-            msg = "Ta da";
-            repo = "";
+            name = Colors.RED+"An internal error has occurred and the author of this push was not readable.";
+            msg = Colors.RED+"An internal error has occurred and the message of this push was not readable.";
+            repo = Colors.RED+"An internal error has occurred and the repository name of this push was not readable.";
             if((array = object.optJSONObject("head_commit")) != null){
                 msg = String.valueOf(object.getJSONArray("commits").getJSONObject(0).getString("message"));
                 JSONObject commiter = array.optJSONObject("committer");

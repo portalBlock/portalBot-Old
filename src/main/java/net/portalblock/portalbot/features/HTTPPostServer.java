@@ -1,5 +1,10 @@
 package net.portalblock.portalbot.features;
 
+import jerklib.util.Colors;
+import net.portalblock.portalbot.PortalBot;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.*;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -9,7 +14,7 @@ import java.util.StringTokenizer;
 /**
  * Created by portalBlock on 6/16/2014.
  */
-public class HTTPPOSTServer extends Thread {
+public class HTTPPostServer extends Thread {
 
     static final String HTML_START =
             "<html>" +
@@ -25,7 +30,7 @@ public class HTTPPOSTServer extends Thread {
     DataOutputStream outToClient = null;
 
 
-    public HTTPPOSTServer(Socket client) {
+    public HTTPPostServer(Socket client) {
         connectedClient = client;
     }
 
@@ -42,8 +47,38 @@ public class HTTPPOSTServer extends Thread {
             inFromClient = new BufferedReader(new InputStreamReader(connectedClient.getInputStream()));
             outToClient = new DataOutputStream(connectedClient.getOutputStream());
 
-            currentLine = inFromClient.readLine();
-            String headerLine = currentLine;
+            //currentLine = inFromClient.readLine();
+            StringBuilder builder = new StringBuilder();
+            String s;
+            int i = 1;
+            while ((s = inFromClient.readLine()) != null){
+                if(i < 9){
+                    i++;
+                }else{
+                    builder.append(s);
+                }
+            }
+            String jsonData = builder.toString();
+            JSONObject object = new JSONObject(jsonData);
+            JSONObject array;
+            String msg, name, repo;
+            name = "";
+            msg = "";
+            repo = "";
+            if((array = object.optJSONObject("head_commit")) != null){
+                msg = object.getString("message");
+                JSONObject commiter = array.optJSONObject("committer");
+                if(commiter != null){
+                    name = commiter.getString("name");
+                }
+            }
+            JSONObject repoJ = object.optJSONObject("repository");
+            if(repoJ != null){
+                repo = repoJ.getString("message");
+            }
+            String totMsg = String.format(Colors.BLACK+"["+Colors.PURPLE+"%s"+Colors.BLACK+"] "+Colors.LIGHT_GRAY+"%s"+Colors.NORMAL+" has pushed: "+Colors.CYAN+"%s", repo, name, msg);
+            PortalBot.say(totMsg);
+            /*String headerLine = currentLine;
             StringTokenizer tokenizer = new StringTokenizer(headerLine);
             String httpMethod = tokenizer.nextToken();
             String httpQueryString = tokenizer.nextToken();
@@ -71,7 +106,7 @@ public class HTTPPOSTServer extends Thread {
                 do {
                     currentLine = inFromClient.readLine();
 
-                    if (currentLine.indexOf("Content-Type: multipart/form-data") != -1) {
+                    if (currentLine.indexOf("Content-Type: application/json") != -1) {
                         String boundary = currentLine.split("boundary=")[1];
                         // The POST boundary
 
@@ -125,7 +160,7 @@ public class HTTPPOSTServer extends Thread {
                         fout.close();
                     } //if
                 } while (inFromClient.ready()); //End of do-while
-            }//else
+            }//else*/
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -152,7 +187,7 @@ public class HTTPPOSTServer extends Thread {
             if (!fileName.endsWith(".htm") && !fileName.endsWith(".html"))
                 contentTypeLine = "Content-Type: \r\n";
         } else {
-            responseString = HTTPPOSTServer.HTML_START + responseString + HTTPPOSTServer.HTML_END;
+            responseString = HTTPPostServer.HTML_START + responseString + HTTPPostServer.HTML_END;
             contentLengthLine = "Content-Length: " + responseString.length() + "\r\n";
         }
 
@@ -181,12 +216,12 @@ public class HTTPPOSTServer extends Thread {
 
     public static void main(String args[]) throws Exception {
 
-        ServerSocket Server = new ServerSocket(5000, 10, InetAddress.getByName("127.0.0.1"));
+        ServerSocket server = new ServerSocket(5000);
         System.out.println("HTTP Server Waiting for client on port 5000");
 
         while (true) {
-            Socket connected = Server.accept();
-            (new HTTPPOSTServer(connected)).start();
+            Socket connected = server.accept();
+            (new HTTPPostServer(connected)).start();
         }
     }
 }

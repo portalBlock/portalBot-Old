@@ -6,18 +6,19 @@ import jerklib.Profile;
 import jerklib.Session;
 import jline.UnsupportedTerminal;
 import jline.console.ConsoleReader;
+import net.portalblock.portalbot.features.HTTPPostServer;
 import net.portalblock.portalbot.features.consolecommands.Join;
 import net.portalblock.portalbot.features.consolecommands.Kick;
 import net.portalblock.portalbot.features.consolecommands.Stop;
 import org.fusesource.jansi.AnsiConsole;
 
 import java.io.*;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
+import java.net.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Created by portalBlock on 1/7/14.
@@ -102,6 +103,24 @@ public class PortalBot {
         session = manager.requestConnection(login[0]);
         session.addIRCEventListener(new EventListner(login));
         running = true;
+        ExecutorService service = Executors.newCachedThreadPool();
+        service.execute(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    ServerSocket server = new ServerSocket(5000);
+                    //System.out.println("HTTP Server Waiting for client on port 5000");
+
+                    while (true) {
+                        Socket connected = server.accept();
+                        (new HTTPPostServer(connected)).start();
+                    }
+                }catch (IOException e){
+
+                }
+
+            }
+        });
     }
 
     public static void say(String args){//Method to speak in all channels

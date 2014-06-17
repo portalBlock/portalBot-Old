@@ -41,8 +41,8 @@ public class HTTPPostServer extends Thread {
 
         try {
 
-            System.out.println("The Client " +
-                    connectedClient.getInetAddress() + ":" + connectedClient.getPort() + " is connected");
+            //System.out.println("The Client " +
+                    //connectedClient.getInetAddress() + ":" + connectedClient.getPort() + " is connected");
 
             inFromClient = new BufferedReader(new InputStreamReader(connectedClient.getInputStream()));
             outToClient = new DataOutputStream(connectedClient.getOutputStream());
@@ -52,7 +52,6 @@ public class HTTPPostServer extends Thread {
             String s;
             int i = 1;
             while ((s = inFromClient.readLine()) != null){
-                System.out.println(s);
                 if(i < 9){
                     i++;
                 }else{
@@ -72,14 +71,10 @@ public class HTTPPostServer extends Thread {
                 if(commiter != null){
                     name = commiter.getString("name");
                 }
-            }else{
-                System.out.println("Null array");
             }
             JSONObject repoJ = object.optJSONObject("repository");
             if(repoJ != null){
                 repo = repoJ.getString("name");
-            }else{
-                System.out.println("Null RepoJ");
             }
             String totMsg = String.format(Colors.BLACK+"["+Colors.PURPLE+"%s"+Colors.BLACK+"] "+Colors.LIGHT_GRAY+"%s"+Colors.NORMAL+" has pushed: "+Colors.CYAN+"%s", repo, name, msg);
             PortalBot.say(totMsg);

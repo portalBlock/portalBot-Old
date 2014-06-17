@@ -63,10 +63,10 @@ public class HTTPPostServer extends Thread {
             JSONObject array;
             String msg, name, repo;
             name = "";
-            msg = "";
+            msg = "Ta da";
             repo = "";
             if((array = object.optJSONObject("head_commit")) != null){
-                msg = object.getString("message");
+                //msg = object.getString("message");
                 JSONObject commiter = array.optJSONObject("committer");
                 if(commiter != null){
                     name = commiter.getString("name");

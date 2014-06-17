@@ -1,5 +1,6 @@
 package net.portalblock.portalbot;
 
+import jerklib.util.Colors;
 import jline.console.ConsoleReader;
 import net.portalblock.portalbot.features.*;
 import net.portalblock.portalbot.features.management.*;
@@ -80,6 +81,7 @@ public class EventListner implements IRCEventListener {
                         case "voice": Voice.voice(me, e); return;
                         case "devoice": DeVoice.deVoice(me, e); return;
                         case "kick": Kick.kick(me, e); return;
+                        case "pastebin": PortalBot.say("Has da pastebin: "+Colors.PURPLE+"http://pastebin.com/"); return;
                         default: return;
                     }
                 }

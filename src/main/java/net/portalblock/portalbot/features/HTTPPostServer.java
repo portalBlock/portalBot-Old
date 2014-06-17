@@ -52,6 +52,7 @@ public class HTTPPostServer extends Thread {
             String s;
             int i = 1;
             while ((s = inFromClient.readLine()) != null){
+                System.out.println(s);
                 if(i < 9){
                     i++;
                 }else{

@@ -71,10 +71,14 @@ public class HTTPPostServer extends Thread {
                 if(commiter != null){
                     name = commiter.getString("name");
                 }
+            }else{
+                System.out.println("Null array");
             }
             JSONObject repoJ = object.optJSONObject("repository");
             if(repoJ != null){
-                repo = repoJ.getString("message");
+                repo = repoJ.getString("name");
+            }else{
+                System.out.println("Null RepoJ");
             }
             String totMsg = String.format(Colors.BLACK+"["+Colors.PURPLE+"%s"+Colors.BLACK+"] "+Colors.LIGHT_GRAY+"%s"+Colors.NORMAL+" has pushed: "+Colors.CYAN+"%s", repo, name, msg);
             PortalBot.say(totMsg);

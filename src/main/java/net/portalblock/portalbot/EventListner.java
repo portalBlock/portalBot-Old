@@ -19,9 +19,15 @@ import java.util.concurrent.Executors;
  */
 public class EventListner implements IRCEventListener {
     private String[] login;
+    public static String PREFIX;
+
+
     public EventListner(String[] loginIn){
         this.login = loginIn;
+        PREFIX = "`";
     }
+
+
     public void receiveEvent(final IRCEvent e){
         if(e.getType() == IRCEvent.Type.CONNECT_COMPLETE){//Checks if event is the CONNECT_COMPLETE event to ghost(kill) all active users
             e.getSession().sayPrivate("nickserv", "GHOST "+login[1]+" "+login[2]);
@@ -50,9 +56,9 @@ public class EventListner implements IRCEventListener {
             }catch (IOException ex){
                // ex.printStackTrace();
             }
-            String[] msgAr = me.getMessage().replaceFirst("`", "").split(" ");
+            String[] msgAr = me.getMessage().replaceFirst(PREFIX, "").split(" ");
 
-            if(me.getMessage().startsWith("`")){
+            if(me.getMessage().startsWith(PREFIX)){
                 if(msgAr.length >=1){
                     //FEATURES
                     ExecutorService service = Executors.newFixedThreadPool(2);

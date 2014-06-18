@@ -34,6 +34,7 @@ public class PortalBot {
     private static ConnectionManager manager;
     public static Session session;
     private static String[] login;
+    private static EventListner listner;
     static ConsoleReader consoleReader;
     public static boolean running;
 
@@ -84,6 +85,46 @@ public class PortalBot {
                             Join.join(cmdAr[1]) ;
                             break;
                         }
+                    case "part":
+                        boolean hasParted = false;
+                        if(cmdAr.length < 2){
+                            print("What channel?");
+                            break;
+                        }else{
+                            //Channel channel = session.getChannel(cmdAr[1]);
+                            List<Channel> channels = session.getChannels();
+                            for(Channel channel : channels){
+                                if(channel.getName().equalsIgnoreCase(cmdAr[1])){
+                                    channel.part("Off I gooooo.");
+                                    hasParted = true;
+                                    print("I have left "+cmdAr[1]+".");
+                                    break;
+                                }
+                            }
+                            if(!hasParted){
+                                print("I am not in that channel!");
+                            }
+                            break;
+                        }
+                    case "nick":
+                        if(cmdAr.length < 2){
+                            print("Change my name to what?");
+                            break;
+                        }else{
+                            session.changeNick(cmdAr[1]);
+                            print("Nickname changed!");
+                            break;
+                        }
+                    case "prefix":
+                        if(cmdAr.length < 2){
+                            print("What shall I change the prefix to?");
+                            break;
+                        }else{
+                            listner.PREFIX = cmdAr[1];
+                            print("Prefix changed to "+cmdAr[1]);
+                            break;
+                        }
+
                     default: print("Command not found."); break;
                 }
             }else{
@@ -104,7 +145,8 @@ public class PortalBot {
     public static void portalBot(){//Makes connection to IRC servers and registers main listener
         manager = new ConnectionManager(new Profile(login[1]));
         session = manager.requestConnection(login[0]);
-        session.addIRCEventListener(new EventListner(login));
+        listner = new EventListner(login);
+        session.addIRCEventListener(listner);
         running = true;
         ExecutorService service = Executors.newCachedThreadPool();
         service.execute(new Runnable() {

@@ -15,12 +15,25 @@ public class ChatTrans {
     private static final Map<Character, String> trans = new HashMap<>();
 
     static {
-        //W.I.P. More colors will be added.
         trans.put('a', Colors.GREEN);
-        trans.put('6', Colors.YELLOW);
+        trans.put('b', Colors.CYAN);
+        trans.put('c', Colors.RED);
+        trans.put('d', Colors.MAGENTA);
+        trans.put('e', Colors.YELLOW);
+        trans.put('f', Colors.WHITE);
+        trans.put('r', Colors.NORMAL);
+        trans.put('n', Colors.UNDERLINE);
         trans.put('0', Colors.BLACK);
-        trans.put('b', Colors.BLUE);
-        trans.put('l', Colors.BOLD);
+        trans.put('1', Colors.DARK_BLUE);
+        trans.put('2', Colors.DARK_GRAY);
+        trans.put('3', Colors.TEAL);
+        trans.put('4', Colors.RED);
+        trans.put('5', Colors.PURPLE);
+        trans.put('6', Colors.OLIVE);
+        trans.put('7', Colors.LIGHT_GRAY);
+        trans.put('8', Colors.DARK_GRAY);
+        trans.put('9', Colors.BLUE);
+
     }
 
     public static String translateColorCodes(String textToTranslate) {

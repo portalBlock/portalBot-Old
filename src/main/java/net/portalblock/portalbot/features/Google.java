@@ -22,8 +22,7 @@ public class Google {
         if(msgAr.length >= 2){
             StringBuilder builder = new StringBuilder();
             for(int i = 1; i < msgAr.length; i++){
-                builder.append(msgAr[i]);
-                builder.append(" ");
+                builder.append(msgAr[i]+"%20");
             }
             String queryURL = BASE.replace("%query%", builder.toString().trim());
             try{

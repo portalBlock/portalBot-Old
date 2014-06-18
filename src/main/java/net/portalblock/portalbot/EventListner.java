@@ -88,6 +88,7 @@ public class EventListner implements IRCEventListener {
                         case "devoice": DeVoice.deVoice(me, e); return;
                         case "kick": Kick.kick(me, e); return;
                         case "pastebin": me.getChannel().say("Has da pastebin: "+Colors.PURPLE+"http://pastebin.com/"); return;
+                        case "g": Google.google(me, e); break;
                         default: return;
                     }
                 }

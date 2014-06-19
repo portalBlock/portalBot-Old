@@ -1,6 +1,7 @@
 package net.portalblock.portalbot.features.consolecommands;
 
 import net.portalblock.portalbot.PortalBot;
+import org.fusesource.jansi.AnsiConsole;
 
 import java.io.IOException;
 
@@ -12,7 +13,11 @@ public class Stop {
 
     public static void stop() throws IOException{
         PortalBot.running = false;
-        //AnsiConsole.systemUninstall();
+        try{
+            PortalBot.getConsole().getTerminal().restore();
+        }catch (Exception e){
+
+        }
         PortalBot.print("Stopping the bot");
         System.exit(0);
     }

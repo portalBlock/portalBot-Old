@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.logging.Logger;
 
 /**
  * Created by portalBlock on 1/7/14.
@@ -46,6 +47,7 @@ public class PortalBot {
         AnsiConsole.systemInstall();
         consoleReader = new ConsoleReader();
         consoleReader.setExpandEvents(false);
+        System.setOut(new PrintStream(new PBLogger(), true));
         if(consoleReader.getTerminal() instanceof UnsupportedTerminal){
             System.out.println("Your system does not support JLine, this program will still function as normal.");
         }

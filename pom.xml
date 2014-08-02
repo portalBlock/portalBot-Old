@@ -25,12 +25,12 @@
             <artifactId>jerklib</artifactId>
             <version>latest</version>
         </dependency>
-    <dependency>
-        <groupId>org.json</groupId>
-        <artifactId>json</artifactId>
-        <version>20131018</version>
-        <scope>compile</scope>
-    </dependency>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20131018</version>
+            <scope>compile</scope>
+        </dependency>
         <dependency>
             <groupId>jline</groupId>
             <artifactId>jline</artifactId>

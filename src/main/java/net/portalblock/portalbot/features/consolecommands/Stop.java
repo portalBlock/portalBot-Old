@@ -14,6 +14,7 @@ public class Stop {
     public static void stop() throws IOException{
         PortalBot.running = false;
         try{
+            AnsiConsole.systemUninstall();
             PortalBot.getConsole().getTerminal().restore();
         }catch (Exception e){
 

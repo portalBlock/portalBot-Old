@@ -13,9 +13,10 @@ import java.util.List;
 public class Remember {
     private static HashMap<String, String> memory = new HashMap<>();
 
-    public static void add(String[] msgAr, MessageEvent me, String key, String msg){
+    public static void add(String[] msgAr, MessageEvent me){
         boolean noPerms = true;
-        if(msgAr.length >= 2){
+        if(msgAr.length >= 3){
+            String key = msgAr[1];
             List<ModeAdjustment> ma = me.getChannel().getUsersModes(me.getNick());
             for(ModeAdjustment a : ma){
                 if(a.getMode() == 'o'||a.getMode() == 'q'){

@@ -93,6 +93,9 @@ public class EventListner implements IRCEventListener {
                     }
                 }
             }
+            if(me.getMessage().startsWith("\\?")){
+                Remember.triggerMemory(me, me.getMessage().replaceFirst("\\?", "").split(" ")[0]);
+            }
 
             ExecutorService service = Executors.newFixedThreadPool(2);
             service.execute(new Runnable() {

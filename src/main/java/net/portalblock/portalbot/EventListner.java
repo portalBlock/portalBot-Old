@@ -94,7 +94,7 @@ public class EventListner implements IRCEventListener {
                     }
                 }
             }
-            if(me.getMessage().startsWith("\\?")){
+            if(me.getMessage().startsWith("?")){
                 Remember.triggerMemory(me, me.getMessage().replaceFirst("\\?", "").split(" ")[0]);
             }
 

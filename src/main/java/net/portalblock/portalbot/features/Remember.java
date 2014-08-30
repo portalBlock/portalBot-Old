@@ -25,6 +25,7 @@ public class Remember {
                         builder.append(msgAr[i]);
                         builder.append(" ");
                     }
+                    //System.out.println(String.format("Key: %s \nValue: %s", key, builder.toString().trim()));
                     memory.put(key.toLowerCase().trim(), builder.toString().trim());
                     noPerms = false;
                     break;

@@ -17,12 +17,12 @@ import java.util.concurrent.Executors;
 /**
  * Created by portalBlock on 1/9/14.
  */
-public class EventListner implements IRCEventListener {
+public class EventListener implements IRCEventListener {
     private String[] login;
     public static String PREFIX;
 
 
-    public EventListner(String[] loginIn){
+    public EventListener(String[] loginIn){
         this.login = loginIn;
         PREFIX = "`";
     }

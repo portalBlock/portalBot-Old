@@ -33,7 +33,7 @@ public class PortalBot {
     private static ConnectionManager manager;
     public static Session session;
     private static String[] login;
-    private static EventListner listner;
+    private static EventListener listner;
     static ConsoleReader consoleReader;
     public static boolean running;
 
@@ -153,7 +153,7 @@ public class PortalBot {
     public static void portalBot(){//Makes connection to IRC servers and registers main listener
         manager = new ConnectionManager(new Profile(login[1]));
         session = manager.requestConnection(login[0]);
-        listner = new EventListner(login);
+        listner = new EventListener(login);
         session.addIRCEventListener(listner);
         running = true;
         try{
@@ -166,24 +166,6 @@ public class PortalBot {
         }catch (IOException e){
 
         }
-        /*ExecutorService service = Executors.newCachedThreadPool();
-        service.execute(new Runnable() {
-            @Override
-            public void run() {
-                try{
-                    ServerSocket server = new ServerSocket(5000);
-                    //System.out.println("HTTP Server Waiting for client on port 5000");
-
-                    while (true) {
-                        Socket connected = server.accept();
-                        (new HTTPPostServer(connected)).start();
-                    }
-                }catch (IOException e){
-
-                }
-
-            }
-        });*/
     }
 
     public static void say(String args){//Method to speak in all channels

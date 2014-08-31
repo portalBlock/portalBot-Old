@@ -5,6 +5,7 @@ import com.sun.net.httpserver.HttpHandler;
 import net.portalblock.portalbot.git.github.GitHubPushEvent;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,5 +32,12 @@ public class GitHubHandler implements HttpHandler {
 
             }
         }
+        String response = "<html><title>Success</title><body><h1>Success</h1></body></html>";
+        httpExchange.sendResponseHeaders(200, response.length());
+        OutputStream os = httpExchange.getResponseBody();
+        os.write(response.getBytes());
+        os.flush();
+        os.close();
+        httpExchange.close();
     }
 }

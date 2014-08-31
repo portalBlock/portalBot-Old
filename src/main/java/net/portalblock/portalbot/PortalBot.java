@@ -1,15 +1,16 @@
 package net.portalblock.portalbot;
 
+import com.sun.net.httpserver.HttpServer;
 import jerklib.Channel;
 import jerklib.ConnectionManager;
 import jerklib.Profile;
 import jerklib.Session;
 import jline.UnsupportedTerminal;
 import jline.console.ConsoleReader;
-import net.portalblock.portalbot.features.HTTPPostServer;
 import net.portalblock.portalbot.features.consolecommands.Join;
 import net.portalblock.portalbot.features.consolecommands.Kick;
 import net.portalblock.portalbot.features.consolecommands.Stop;
+import net.portalblock.portalbot.git.GitHubHandler;
 import org.fusesource.jansi.AnsiConsole;
 
 import java.io.*;
@@ -17,9 +18,6 @@ import java.net.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.logging.Logger;
 
 /**
  * Created by portalBlock on 1/7/14.
@@ -144,13 +142,31 @@ public class PortalBot {
         }
     }
 
+    private static String getSecureCode(){
+        if(login.length < 5){
+            return "default";
+        }else{
+            return login[4];
+        }
+    }
+
     public static void portalBot(){//Makes connection to IRC servers and registers main listener
         manager = new ConnectionManager(new Profile(login[1]));
         session = manager.requestConnection(login[0]);
         listner = new EventListner(login);
         session.addIRCEventListener(listner);
         running = true;
-        ExecutorService service = Executors.newCachedThreadPool();
+        try{
+            HttpServer httpServer = HttpServer.create(new InetSocketAddress(5000), 0);
+            httpServer.createContext("/githubapi"+getSecureCode(), new GitHubHandler());
+            httpServer.setExecutor(null);
+            httpServer.start();
+            print("GitHub Hook server running on port 5000");
+            print("Set hook to use http://<server_address>:5000/githubapi"+getSecureCode());
+        }catch (IOException e){
+
+        }
+        /*ExecutorService service = Executors.newCachedThreadPool();
         service.execute(new Runnable() {
             @Override
             public void run() {
@@ -167,7 +183,7 @@ public class PortalBot {
                 }
 
             }
-        });
+        });*/
     }
 
     public static void say(String args){//Method to speak in all channels
@@ -189,7 +205,7 @@ public class PortalBot {
             try{
                 file.createNewFile();//Trys to create file
                 System.out.println("login.txt file created please add login info to the file.");//Tells the user the file is made
-                System.out.println("LOGIN FORMAT: <host>|<nick>|<pass>|<#channel>");//Gives the format to the user
+                System.out.println("LOGIN FORMAT: <host>|<nick>|<pass>|<#channel>|githooksecurecode");//Gives the format to the user
                 System.exit(0);//Ends the program with exit status 0
             }catch (IOException ex){
                 System.out.println("Unable to create login.txt");//Throws error that the file can not be created

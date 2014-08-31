@@ -1,1 +1,1 @@
-Host|name|password|#channel
+Host|name|password|#channel|githooksecurecode

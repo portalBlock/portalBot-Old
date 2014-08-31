@@ -1,0 +1,17 @@
+{
+  "servers": [
+    {
+      "prefix": "`",
+      "host": "irc.myserver.net",
+      "port": 6667,
+      "username": "MyBot",
+      "password": "pass",
+      "channels": [
+        "#MyAwesomeChannel"
+      ],
+      "staff": [
+        "MyAwesomeNick"
+      ]
+    }
+  ]
+}

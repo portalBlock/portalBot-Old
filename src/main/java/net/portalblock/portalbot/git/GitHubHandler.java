@@ -32,7 +32,7 @@ public class GitHubHandler implements HttpHandler {
 
             }
         }
-        String response = "<html><title>Success</title><body><h1>Success</h1></body></html>";
+        String response = "<html><head><title>Success</title></head><body><h1>Success</h1></body></html>";
         httpExchange.sendResponseHeaders(200, response.length());
         OutputStream os = httpExchange.getResponseBody();
         os.write(response.getBytes());

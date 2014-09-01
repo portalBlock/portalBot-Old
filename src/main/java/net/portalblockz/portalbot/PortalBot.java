@@ -1,10 +1,15 @@
 package net.portalblockz.portalbot;
 
 import com.sun.net.httpserver.HttpServer;
+import jerklib.Channel;
+import jerklib.ConnectionManager;
+import jerklib.Profile;
+import jerklib.Session;
 import jline.console.ConsoleReader;
 import net.portalblockz.portalbot.git.GitHubHandler;
 import net.portalblockz.portalbot.serverdata.ConnectionPack;
 import net.portalblockz.portalbot.serverdata.JSONConfigManager;
+import net.portalblockz.portalbot.serverdata.Server;
 import net.portalblockz.portalbot.webinterface.WebIntHandler;
 
 import java.io.File;
@@ -21,9 +26,14 @@ public class PortalBot{
     private ConsoleReader consoleReader;
     private JSONConfigManager configManager;
     private List<ConnectionPack> connections = new ArrayList<>();
+    private static PortalBot instance;
+
+    public static PortalBot getInstance() {
+        return instance;
+    }
 
     public static void main(String[] args){
-        new PortalBot();
+        instance = new PortalBot();
     }
 
     public PortalBot(){
@@ -38,7 +48,7 @@ public class PortalBot{
             e.printStackTrace();
         }
         configManager = new JSONConfigManager(new File("config.json"));
-        /*for(Server server : configManager.getServers()){
+        for(Server server : configManager.getServers()){
             ConnectionManager manager = new ConnectionManager(new Profile(server.getUsername()));
             Session session = manager.requestConnection(server.getHost(), server.getPort());
             ConnectionPack pack = new ConnectionPack(manager, session);
@@ -46,7 +56,7 @@ public class PortalBot{
             EventListener listener = new EventListener(pack, server);
             session.addIRCEventListener(listener);
 
-        }*/
+        }
 
         try{
             HttpServer httpServer = HttpServer.create(new InetSocketAddress(5000), 0);
@@ -58,6 +68,15 @@ public class PortalBot{
             print("Set hook to use http://<server_address>:5000/githubapi");
         }catch (IOException e){
 
+        }
+    }
+
+    public void globalSpeak(String s){
+        print("ME: "+s);
+        for(ConnectionPack pack : connections){
+            for(Channel channel : pack.getSession().getChannels()){
+                channel.say(s);
+            }
         }
     }
 

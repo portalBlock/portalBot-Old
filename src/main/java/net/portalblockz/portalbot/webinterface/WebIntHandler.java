@@ -1,11 +1,9 @@
-package net.portalblockz.portalbot.git;
+package net.portalblockz.portalbot.webinterface;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import net.portalblockz.portalbot.Utils;
-import net.portalblockz.portalbot.git.github.GitHubPushEvent;
 
-import javax.rmi.CORBA.Util;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -14,44 +12,31 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by portalBlock on 8/30/2014.
+ * Created by portalBlock on 9/1/2014.
  */
-public class GitHubHandler implements HttpHandler {
-
-    private Map<String, Class<? extends IGitEvent>> eventHandlers = new HashMap<>();
-
-    public GitHubHandler(){
-        eventHandlers.put("push", GitHubPushEvent.class);
-    }
+public class WebIntHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
-        String type = httpExchange.getRequestHeaders().getFirst("X-Github-Event");
-        if(type == null){
-            sendReply(httpExchange, "You should not be here, SCRAM!");
-            return;
-        }
-        Class<? extends IGitEvent> eventHandler = eventHandlers.get(type.toLowerCase());
-        if(eventHandler != null){
-            //eventHandler.handle(httpExchange);
-            try{
-                eventHandler.newInstance().handle(httpExchange);
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-        }
+        //TODO: Make this dynamic with a page, add support for multiple pages, make it actually display info!
+        String header = "<h1 style=\"color:red\">portalBot IRC Bot</h1>";
+        String text =
+                "<p>Welcome this is the beginning of a web interface for portalBot, its a WIP and right now does not have anything but this message on it!</p>";
+        String footer = "<center>&copy; portalBlock 2014</center>";
+        sendReply(httpExchange, header+text+footer);
     }
+
 
     private void sendReply(HttpExchange httpExchange, String msg){
         try{
-            String response = "<html><head><title>portalBot</title></head><body><h1>"+msg+"</h1></body></html>";
+            String response = "<html><head><title>portalBot</title></head><body>"+msg+"</body></html>";
             Map<String, String> newHeaders = new HashMap<>();
             newHeaders.put("Date", Utils.getDate());
             newHeaders.put("Server", "portalBot IRC Bot Webserver");
             newHeaders.put("Content-Length", response.length()+"");
             newHeaders.put("Content-Type", "text/html");
             for(Map.Entry<String, String> entry : newHeaders.entrySet()){
-                List<String> l = new ArrayList<String>();
+                List<String> l = new ArrayList<>();
                 l.add(entry.getValue());
                 httpExchange.getResponseHeaders().put(entry.getKey(), l);
             }

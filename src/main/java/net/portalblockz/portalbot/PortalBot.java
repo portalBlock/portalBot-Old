@@ -10,6 +10,7 @@ import net.portalblockz.portalbot.git.GitHubHandler;
 import net.portalblockz.portalbot.serverdata.ConnectionPack;
 import net.portalblockz.portalbot.serverdata.JSONConfigManager;
 import net.portalblockz.portalbot.serverdata.Server;
+import net.portalblockz.portalbot.webinterface.WebIntHandler;
 
 import java.io.File;
 import java.io.IOException;
@@ -42,7 +43,7 @@ public class PortalBot{
             e.printStackTrace();
         }
         configManager = new JSONConfigManager(new File("config.json"));
-        for(Server server : configManager.getServers()){
+        /*for(Server server : configManager.getServers()){
             ConnectionManager manager = new ConnectionManager(new Profile(server.getUsername()));
             Session session = manager.requestConnection(server.getHost(), server.getPort());
             ConnectionPack pack = new ConnectionPack(manager, session);
@@ -50,11 +51,12 @@ public class PortalBot{
             EventListener listener = new EventListener(pack, server);
             session.addIRCEventListener(listener);
 
-        }
+        }*/
 
         try{
             HttpServer httpServer = HttpServer.create(new InetSocketAddress(5000), 0);
             httpServer.createContext("/githubapi", new GitHubHandler());
+            httpServer.createContext("/", new WebIntHandler());
             httpServer.setExecutor(null);
             httpServer.start();
             print("GitHub Hook server running on port 5000");

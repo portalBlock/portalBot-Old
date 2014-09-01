@@ -1,15 +1,19 @@
 package net.portalblockz.portalbot;
 
+import com.sun.net.httpserver.HttpServer;
 import jerklib.ConnectionManager;
 import jerklib.Profile;
 import jerklib.Session;
 import jline.UnsupportedTerminal;
 import jline.console.ConsoleReader;
+import net.portalblockz.portalbot.git.GitHubHandler;
 import net.portalblockz.portalbot.serverdata.ConnectionPack;
 import net.portalblockz.portalbot.serverdata.JSONConfigManager;
 import net.portalblockz.portalbot.serverdata.Server;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,6 +49,17 @@ public class PortalBot{
             connections.add(pack);
             EventListener listener = new EventListener(pack, server);
             session.addIRCEventListener(listener);
+
+        }
+
+        try{
+            HttpServer httpServer = HttpServer.create(new InetSocketAddress(5000), 0);
+            httpServer.createContext("/githubapi", new GitHubHandler());
+            httpServer.setExecutor(null);
+            httpServer.start();
+            print("GitHub Hook server running on port 5000");
+            print("Set hook to use http://<server_address>:5000/githubapi");
+        }catch (IOException e){
 
         }
     }

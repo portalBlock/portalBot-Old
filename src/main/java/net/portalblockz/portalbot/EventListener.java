@@ -5,6 +5,8 @@ import jerklib.events.InviteEvent;
 import jerklib.events.MessageEvent;
 import jerklib.events.NoticeEvent;
 import jerklib.listeners.IRCEventListener;
+import net.portalblockz.portalbot.command.CommandManager;
+import net.portalblockz.portalbot.command.UserCommandSender;
 import net.portalblockz.portalbot.serverdata.ConnectionPack;
 import net.portalblockz.portalbot.serverdata.Server;
 
@@ -36,7 +38,7 @@ public class EventListener implements IRCEventListener {
             case CHANNEL_MESSAGE:
                 MessageEvent me = (MessageEvent) ircEvent;
                 handle(me);
-                System.out.println(me.getNick()+": "+me.getMessage());
+                System.out.println("["+me.getChannel().getName()+"] "+me.getNick()+": "+me.getMessage());
                 break;
             case INVITE_EVENT:
                 InviteEvent ie = (InviteEvent) ircEvent;
@@ -45,7 +47,7 @@ public class EventListener implements IRCEventListener {
             case PRIVATE_MESSAGE:
                 MessageEvent pm = (MessageEvent) ircEvent;
                 handle(pm);
-                System.out.println(pm.getNick()+": "+pm.getMessage());
+                System.out.println("PM: "+pm.getNick()+": "+pm.getMessage());
                 break;
             case NOTICE:
                 NoticeEvent ne = (NoticeEvent) ircEvent;
@@ -56,6 +58,18 @@ public class EventListener implements IRCEventListener {
     }
 
     private void handle(MessageEvent e){
-
+        if(e.getMessage().startsWith(server.getPrefix()+"")){
+            String message = e.getMessage().replaceFirst(server.getPrefix() + "", "");
+            if(message.length() == 0) return;
+            String[] total = message.split(" ");
+            String command = total[0];
+            String[] newArgs = new String[total.length-1];
+            if(total.length > 1){
+                for(int i = 1; i < total.length; i++){
+                    newArgs[i-1] = total[i];
+                }
+            }
+            CommandManager.handle(new UserCommandSender(e.getNick(), e.getChannel().getName(), pack.getSession(), server), command, newArgs);
+        }
     }
 }

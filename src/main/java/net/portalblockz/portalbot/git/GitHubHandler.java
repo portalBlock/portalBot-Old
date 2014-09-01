@@ -5,7 +5,6 @@ import com.sun.net.httpserver.HttpHandler;
 import net.portalblockz.portalbot.Utils;
 import net.portalblockz.portalbot.git.github.GitHubPushEvent;
 
-import javax.rmi.CORBA.Util;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -51,7 +50,7 @@ public class GitHubHandler implements HttpHandler {
             newHeaders.put("Content-Length", response.length()+"");
             newHeaders.put("Content-Type", "text/html");
             for(Map.Entry<String, String> entry : newHeaders.entrySet()){
-                List<String> l = new ArrayList<String>();
+                List<String> l = new ArrayList<>();
                 l.add(entry.getValue());
                 httpExchange.getResponseHeaders().put(entry.getKey(), l);
             }

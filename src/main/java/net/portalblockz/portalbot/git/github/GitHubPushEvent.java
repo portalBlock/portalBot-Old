@@ -2,7 +2,6 @@ package net.portalblockz.portalbot.git.github;
 
 import com.sun.net.httpserver.HttpExchange;
 import jerklib.util.Colors;
-import net.portalblockz.portalbot.PortalBot;
 import net.portalblockz.portalbot.git.IGitEvent;
 import org.json.JSONObject;
 

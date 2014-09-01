@@ -1,15 +1,10 @@
 package net.portalblockz.portalbot;
 
 import com.sun.net.httpserver.HttpServer;
-import jerklib.ConnectionManager;
-import jerklib.Profile;
-import jerklib.Session;
-import jline.UnsupportedTerminal;
 import jline.console.ConsoleReader;
 import net.portalblockz.portalbot.git.GitHubHandler;
 import net.portalblockz.portalbot.serverdata.ConnectionPack;
 import net.portalblockz.portalbot.serverdata.JSONConfigManager;
-import net.portalblockz.portalbot.serverdata.Server;
 import net.portalblockz.portalbot.webinterface.WebIntHandler;
 
 import java.io.File;

@@ -2,7 +2,6 @@ package net.portalblockz.portalbot.serverdata;
 
 import jerklib.ConnectionManager;
 import jerklib.Session;
-import jerklib.listeners.IRCEventListener;
 
 /**
  * Created by portalBlock on 8/31/2014.

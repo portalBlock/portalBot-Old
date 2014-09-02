@@ -3,6 +3,7 @@
     {
       "prefix": "`",
       "host": "irc.myserver.net",
+      "net-pass": "myNet",
       "port": 6667,
       "username": "MyBot",
       "password": "pass",

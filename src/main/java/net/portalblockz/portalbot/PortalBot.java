@@ -65,6 +65,7 @@ public class PortalBot{
             connections.add(pack);
             EventListener listener = new EventListener(pack, server);
             session.addIRCEventListener(listener);
+            session.addIRCEventListener(new FeatureListener(pack, server));
 
         }
 

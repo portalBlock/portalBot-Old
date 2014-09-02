@@ -17,6 +17,7 @@ public class CommandManager {
         commandMap.put("stop", Stop.class);
         commandMap.put("join", Join.class);
         commandMap.put("kick", Kick.class);
+        commandMap.put("remember", Remember.class);
     }
 
     public static void handle(CommandSender sender, String command, String[] args){

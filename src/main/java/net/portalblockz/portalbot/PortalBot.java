@@ -27,11 +27,11 @@ import java.util.List;
  */
 public class PortalBot{
 
-    private ConsoleReader consoleReader;
+    //private ConsoleReader consoleReader;
     private JSONConfigManager configManager;
     private List<ConnectionPack> connections = new ArrayList<>();
     private static PortalBot instance;
-    private boolean running;
+    //private boolean running;
 
     public static PortalBot getInstance() {
         return instance;
@@ -44,7 +44,7 @@ public class PortalBot{
     public PortalBot(){
         instance = this;
         //Load JLine
-        try{
+        /*try{
             consoleReader = new ConsoleReader();
             consoleReader.setExpandEvents(false);
             System.setOut(new PrintStream(new PBLogger(this), true));
@@ -53,7 +53,7 @@ public class PortalBot{
             }
         }catch (Exception e){
             e.printStackTrace();
-        }
+        }*/
         //Load config
         configManager = new JSONConfigManager(new File("config.json"));
 
@@ -78,14 +78,14 @@ public class PortalBot{
             print("GitHub Hook server running on port 5000");
             print("Set hook to use http://<server_address>:5000/githubapi");
         }catch (IOException e){
-
+            e.printStackTrace();
         }
 
         //Set running to true for input readers
-        running = true;
+        /*running = true;*/
 
         //Start taking input in the main thread.
-        String input;
+        /*String input;
         do{
             try{
                 input = consoleReader.readLine(">");
@@ -101,7 +101,7 @@ public class PortalBot{
             }catch (IOException e){
                 e.printStackTrace();
             }
-        }while (running);
+        }while (running);*/
     }
 
     public void globalSpeak(String s){
@@ -113,8 +113,18 @@ public class PortalBot{
         }
     }
 
+    public void sayInChannels(String s, List<String> channels){
+        if(channels == null) return;
+        for(ConnectionPack pack : connections){
+            for(Channel channel : pack.getSession().getChannels()){
+                if(channels.contains(channel.getName().toLowerCase())){
+                    channel.say(s);
+                }
+            }
+        }
+    }
+
     public void stop(){
-        running = false;
         System.out.println("Leaving IRC channels...");
         for(ConnectionPack pack : connections){
             for(Channel channel : pack.getSession().getChannels()){
@@ -122,22 +132,23 @@ public class PortalBot{
             }
         }
         try{
-            System.setOut(System.out);
-            consoleReader.getTerminal().restore();
+            /*System.setOut(System.out);
+            consoleReader.getTerminal().restore();*/
         }catch (Exception e){
             e.printStackTrace();
         }
+        //running = false;
         System.exit(0);
     }
 
     public void print(String s){
-        //System.out.println(s);
-        try{
+        System.out.println(s);
+        /*try{
             consoleReader.println(s);
             //consoleReader.flush();
         }catch (IOException e){
             e.printStackTrace();
-        }
+        }*/
     }
 
 }

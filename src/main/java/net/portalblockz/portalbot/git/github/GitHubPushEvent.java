@@ -4,6 +4,7 @@ import com.sun.net.httpserver.HttpExchange;
 import jerklib.util.Colors;
 import net.portalblockz.portalbot.PortalBot;
 import net.portalblockz.portalbot.git.IGitEvent;
+import net.portalblockz.portalbot.serverdata.JSONConfigManager;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -47,7 +48,8 @@ public class GitHubPushEvent extends IGitEvent {
             repo = repoJ.getString("name");
         }
         String totMsg = String.format(Colors.BLACK+"["+Colors.PURPLE+"%s"+Colors.BLACK+"] "+Colors.LIGHT_GRAY+"%s"+Colors.NORMAL+" has pushed: "+Colors.CYAN+"%s", repo, name, msg);
-        PortalBot.getInstance().globalSpeak(totMsg);
+        //PortalBot.getInstance().globalSpeak(totMsg);
+        PortalBot.getInstance().sayInChannels(totMsg, JSONConfigManager.getInstance().getChannelsForRepo(repo));
     }
 
 }

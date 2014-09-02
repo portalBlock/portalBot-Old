@@ -1,8 +1,6 @@
 package net.portalblockz.portalbot.command;
 
-import net.portalblockz.portalbot.command.commands.Ban;
-import net.portalblockz.portalbot.command.commands.Cake;
-import net.portalblockz.portalbot.command.commands.Stop;
+import net.portalblockz.portalbot.command.commands.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,6 +15,8 @@ public class CommandManager {
         commandMap.put("ban", Ban.class);
         commandMap.put("cake", Cake.class);
         commandMap.put("stop", Stop.class);
+        commandMap.put("join", Join.class);
+        commandMap.put("kick", Kick.class);
     }
 
     public static void handle(CommandSender sender, String command, String[] args){

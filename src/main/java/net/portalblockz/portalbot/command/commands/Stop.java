@@ -1,5 +1,6 @@
 package net.portalblockz.portalbot.command.commands;
 
+import jerklib.util.Colors;
 import net.portalblockz.portalbot.PortalBot;
 import net.portalblockz.portalbot.command.BasicCommand;
 import net.portalblockz.portalbot.command.CommandSender;
@@ -15,6 +16,8 @@ public class Stop extends BasicCommand {
         if(sender instanceof ConsoleCommandSender || shouldProceed(sender)){
             sender.sendMessage("Shutting down the bot!");
             PortalBot.getInstance().stop();
+        }else{
+            sender.sendMessage(Colors.RED+"Sorry you are not allowed to do that!");
         }
     }
 }

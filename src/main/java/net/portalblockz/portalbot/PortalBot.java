@@ -21,6 +21,7 @@ import java.io.PrintStream;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  * Created by portalBlock on 8/31/2014.
@@ -31,7 +32,7 @@ public class PortalBot{
     private JSONConfigManager configManager;
     private List<ConnectionPack> connections = new ArrayList<>();
     private static PortalBot instance;
-    //private boolean running;
+    private boolean running;
 
     public static PortalBot getInstance() {
         return instance;
@@ -83,11 +84,29 @@ public class PortalBot{
         }
 
         //Set running to true for input readers
-        /*running = true;*/
+        running = true;
 
         //Start taking input in the main thread.
-        /*String input;
-        do{
+        String input;
+
+
+        //Hacky thing to take input
+        Scanner scanner = new Scanner(System.in);
+        while ((input = scanner.nextLine()) != null && running){
+            String[] total = input.split(" ");
+            String command = total[0];
+            String[] newArgs = new String[total.length-1];
+            if(total.length > 1){
+                for(int i = 1; i < total.length; i++){
+                    newArgs[i-1] = total[i];
+                }
+            }
+            CommandManager.handle(new ConsoleCommandSender(), command, newArgs);
+        }
+
+
+        //Real JLine TODO: Make work!!
+        /*do{
             try{
                 input = consoleReader.readLine(">");
                 String[] total = input.split(" ");

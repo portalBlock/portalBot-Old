@@ -29,6 +29,8 @@ public class GitHubHandler implements HttpHandler {
         if(type == null){
             sendReply(httpExchange, "You should not be here, SCRAM!");
             return;
+        }else{
+            sendReply(httpExchange, "Got it GitHub, Thanks!");
         }
         Class<? extends IGitEvent> eventHandler = eventHandlers.get(type.toLowerCase());
         if(eventHandler != null){

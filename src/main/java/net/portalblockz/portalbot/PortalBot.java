@@ -62,7 +62,7 @@ public class PortalBot{
         for(Server server : configManager.getServers()){
             ConnectionManager manager = new ConnectionManager(new Profile(server.getUsername()));
             Session session = manager.requestConnection(server.getHost(), server.getPort());
-            ConnectionPack pack = new ConnectionPack(manager, session);
+            ConnectionPack pack = new ConnectionPack(manager, session, server.getHost());
             connections.add(pack);
             EventListener listener = new EventListener(pack, server);
             session.addIRCEventListener(listener);
@@ -74,7 +74,11 @@ public class PortalBot{
         try{
             HttpServer httpServer = HttpServer.create(new InetSocketAddress(5000), 0);
             httpServer.createContext("/githubapi", new GitHubHandler());
-            httpServer.createContext("/", new WebIntHandler());
+            try{
+                httpServer.createContext("/", new WebIntHandler());
+            }catch (Exception e){
+
+            }
             httpServer.setExecutor(null);
             httpServer.start();
             print("GitHub Hook server running on port 5000");
@@ -142,6 +146,12 @@ public class PortalBot{
                 }
             }
         }
+    }
+
+    public ConnectionPack[] getConnections(){
+        ConnectionPack[] val = new ConnectionPack[this.connections.size()];
+        connections.toArray(val);
+        return val;
     }
 
     public void stop(){

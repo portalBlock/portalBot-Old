@@ -26,12 +26,6 @@ public class GitHubHandler implements HttpHandler {
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
         String type = httpExchange.getRequestHeaders().getFirst("X-Github-Event");
-        if(type == null){
-            sendReply(httpExchange, "You should not be here, SCRAM!");
-            return;
-        }else{
-            sendReply(httpExchange, "Got it GitHub, Thanks!");
-        }
         Class<? extends IGitEvent> eventHandler = eventHandlers.get(type.toLowerCase());
         if(eventHandler != null){
             //eventHandler.handle(httpExchange);
@@ -41,6 +35,13 @@ public class GitHubHandler implements HttpHandler {
                 e.printStackTrace();
             }
         }
+        if(type == null){
+            sendReply(httpExchange, "You should not be here, SCRAM!");
+            return;
+        }else{
+            sendReply(httpExchange, "Got it GitHub, Thanks!");
+        }
+        System.out.println("GitHub event received!");
     }
 
     private void sendReply(HttpExchange httpExchange, String msg){

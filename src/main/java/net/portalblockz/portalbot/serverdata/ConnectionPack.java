@@ -10,10 +10,11 @@ public class ConnectionPack {
 
     private Session session;
     private ConnectionManager connectionManager;
-
-    public ConnectionPack(ConnectionManager connectionManager, Session session) {
+    private String host;
+    public ConnectionPack(ConnectionManager connectionManager, Session session, String host) {
         this.connectionManager = connectionManager;
         this.session = session;
+        this.host = host;
     }
 
     public Session getSession() {
@@ -22,5 +23,9 @@ public class ConnectionPack {
 
     public ConnectionManager getConnectionManager() {
         return connectionManager;
+    }
+
+    public String getHost() {
+        return host;
     }
 }

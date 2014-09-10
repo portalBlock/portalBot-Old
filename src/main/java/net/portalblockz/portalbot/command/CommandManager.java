@@ -18,6 +18,7 @@ public class CommandManager {
         commandMap.put("join", Join.class);
         commandMap.put("kick", Kick.class);
         commandMap.put("remember", Remember.class);
+        commandMap.put("potato", Potato.class);
     }
 
     public static void handle(CommandSender sender, String command, String[] args){

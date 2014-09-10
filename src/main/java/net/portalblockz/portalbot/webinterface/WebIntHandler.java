@@ -11,18 +11,17 @@ import org.json.JSONObject;
 
 import java.io.*;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by portalBlock on 9/1/2014.
  */
 public class WebIntHandler implements HttpHandler {
-    private String indexContent;
+    private String defaultContent;
+    private boolean customFile;
 
     public WebIntHandler() throws Exception{
+        customFile = false;
         File file = new File("index.html");
         if(!file.exists()){
             StringBuilder reply = new StringBuilder();
@@ -31,9 +30,9 @@ public class WebIntHandler implements HttpHandler {
             reply.append("<p>This is the default page for portalBot IRC Bot web interface... please add a page by adding index.html to your bot's root folder!</p>");
             reply.append("<br><p> %servers% </p>");
             reply.append("</body></html>");
-            indexContent = reply.toString();
+            defaultContent = reply.toString();
         }else{
-            indexContent = readFile(file);
+            customFile = true;
         }
 
     }
@@ -44,10 +43,17 @@ public class WebIntHandler implements HttpHandler {
         /*String header = "<h1 style=\"color:red\">portalBot IRC Bot</h1>";
         String text =
                 "<p>Welcome this is the beginning of a web interface for portalBot, its a WIP and right now does not have anything but this message on it!</p>";*/
-        String footer = "<br><center>&copy; portalBlock 2014</center>";
-        String reply = indexContent;
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date(System.currentTimeMillis()));
+        String footer = "<br><center>&copy; portalBlock "+c.YEAR+"</center>";
+        String reply;
+        if(customFile){
+            reply = readFile(new File("index.html"));
+        }else{
+            reply = defaultContent;
+        }
         reply = reply.replaceAll("%servers%", getJSONServers());
-        sendReply(httpExchange, reply+footer);
+        sendReply(httpExchange, reply + footer);
     }
 
     private void sendReply(HttpExchange httpExchange, String msg){
@@ -86,6 +92,7 @@ public class WebIntHandler implements HttpHandler {
             String s;
             while ((s = reader.readLine()) != null){
                 responseBuilder.append(s);
+                responseBuilder.append("\n");
             }
         }catch (Exception e){
 

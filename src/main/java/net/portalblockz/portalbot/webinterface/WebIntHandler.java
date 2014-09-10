@@ -11,6 +11,7 @@ import org.json.JSONObject;
 
 import java.io.*;
 import java.nio.file.Path;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -19,6 +20,7 @@ import java.util.*;
 public class WebIntHandler implements HttpHandler {
     private String defaultContent;
     private boolean customFile;
+    private String year;
 
     public WebIntHandler() throws Exception{
         customFile = false;
@@ -34,7 +36,7 @@ public class WebIntHandler implements HttpHandler {
         }else{
             customFile = true;
         }
-
+        year = new SimpleDateFormat("yyyy").format(new Date());
     }
 
     @Override
@@ -43,9 +45,7 @@ public class WebIntHandler implements HttpHandler {
         /*String header = "<h1 style=\"color:red\">portalBot IRC Bot</h1>";
         String text =
                 "<p>Welcome this is the beginning of a web interface for portalBot, its a WIP and right now does not have anything but this message on it!</p>";*/
-        Calendar c = Calendar.getInstance();
-        c.setTime(new Date(System.currentTimeMillis()));
-        String footer = "<br><center>&copy; portalBlock "+c.YEAR+"</center>";
+        String footer = "<br><center>&copy; portalBlock "+year+"</center>";
         String reply;
         if(customFile){
             reply = readFile(new File("index.html"));

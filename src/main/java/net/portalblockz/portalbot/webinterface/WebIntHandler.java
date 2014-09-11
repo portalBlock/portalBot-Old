@@ -53,6 +53,7 @@ public class WebIntHandler implements HttpHandler {
             reply = defaultContent;
         }
         reply = reply.replaceAll("%servers%", getJSONServers());
+        //reply = reply.replaceAll("%stats%", getJSONSystemStats());
         sendReply(httpExchange, reply + footer);
     }
 
@@ -116,6 +117,7 @@ public class WebIntHandler implements HttpHandler {
             for(Channel channel : pack.getSession().getChannels()){
                 JSONObject chnl = new JSONObject();
                 chnl.put("name", channel.getName());
+                chnl.put("motd", channel.getTopic());
                 chnl.put("people", channel.getNicks());
                 channels.put(chnl);
             }
@@ -129,4 +131,15 @@ public class WebIntHandler implements HttpHandler {
         }
         return array.toString();
     }
+
+    /*private String getJSONSystemStats(){
+        JSONObject stats = new JSONObject();
+        //stats.put("cpu_usgae", SystemUtils.getCpuUsage());
+        stats.put("total_memory", SystemUtils.totalMem());
+        stats.put("used_memory", SystemUtils.usedMem());
+        stats.put("os_name", SystemUtils.OSname());
+        stats.put("os_arch", SystemUtils.OSArch());
+        stats.put("os_version", SystemUtils.OSversion());
+        return stats.toString();
+    }*/
 }

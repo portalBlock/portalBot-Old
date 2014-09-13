@@ -10,6 +10,7 @@ package net.portalblockz.portalbot.git;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import net.portalblockz.portalbot.Utils;
+import net.portalblockz.portalbot.git.github.GitHubPullRequestEvent;
 import net.portalblockz.portalbot.git.github.GitHubPushEvent;
 
 import java.io.IOException;
@@ -28,6 +29,7 @@ public class GitHubHandler implements HttpHandler {
 
     public GitHubHandler(){
         eventHandlers.put("push", GitHubPushEvent.class);
+        eventHandlers.put("pull_request", GitHubPullRequestEvent.class);
     }
 
     @Override

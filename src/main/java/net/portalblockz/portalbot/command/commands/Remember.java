@@ -35,7 +35,7 @@ public class Remember extends BasicCommand {
             }
             memory.put(args[0].toLowerCase(), builder.toString().trim());
         }else{
-            sender.sendMessage(Colors.RED+"Sorry you are not allowed to do that!");
+            noPerms(sender);
         }
     }
 

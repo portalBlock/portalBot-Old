@@ -39,7 +39,7 @@ public class Kick extends BasicCommand {
             UserCommandSender ucs = (UserCommandSender) sender;
             ucs.getSession().getChannel(ucs.getChannel()).kick(args[0], reason);
         }else{
-            sender.sendMessage(Colors.RED+"Sorry you are not allowed to do that!");
+            noPerms(sender);
         }
     }
 }

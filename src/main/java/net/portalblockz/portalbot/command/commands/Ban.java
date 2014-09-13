@@ -21,7 +21,7 @@ public class Ban extends BasicCommand {
     @Override
     public void handle(CommandSender sender, String[] args) {
         if(!shouldProceed(sender)){
-            sender.sendMessage(Colors.RED+"Sorry you are not allowed to do that!");
+            noPerms(sender);
             return;
         }
         if(args.length < 1){

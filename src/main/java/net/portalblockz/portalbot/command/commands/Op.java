@@ -7,24 +7,30 @@
 
 package net.portalblockz.portalbot.command.commands;
 
-import jerklib.util.Colors;
-import net.portalblockz.portalbot.PortalBot;
 import net.portalblockz.portalbot.command.BasicCommand;
 import net.portalblockz.portalbot.command.CommandSender;
 import net.portalblockz.portalbot.command.ConsoleCommandSender;
+import net.portalblockz.portalbot.command.UserCommandSender;
 
 /**
- * Created by portalBlock on 9/1/2014.
+ * Created by portalBlock on 9/12/2014.
  */
-public class Stop extends BasicCommand {
+public class Op extends BasicCommand {
 
     @Override
     public void handle(CommandSender sender, String[] args) {
-        if(sender instanceof ConsoleCommandSender || shouldProceed(sender)){
-            sender.sendMessage("Shutting down the bot!");
-            PortalBot.getInstance().stop();
-        }else{
-            noPerms(sender);
+        if(shouldProceed(sender)){
+            if(args.length < 1){
+                sender.sendMessage("Please include the person to op!");
+                return;
+            }
+            UserCommandSender ucs = (UserCommandSender)sender;
+            ucs.getSession().getChannel(ucs.getChannel()).op(args[0]);
         }
+        if(sender instanceof ConsoleCommandSender){
+            sender.sendMessage("Not implemented yet, sorry.");
+            return;
+        }
+        noPerms(sender);
     }
 }

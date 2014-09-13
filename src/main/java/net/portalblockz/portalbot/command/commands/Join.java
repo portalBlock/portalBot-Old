@@ -34,7 +34,7 @@ public class Join extends BasicCommand {
             ucs.getSession().join(args[0]);
             sender.sendMessage("I have joined "+args[0]);
         }else{
-            sender.sendMessage(Colors.RED+"Sorry you are not allowed to do that!");
+            noPerms(sender);
         }
     }
 }

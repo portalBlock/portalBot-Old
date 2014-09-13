@@ -7,6 +7,8 @@
 
 package net.portalblockz.portalbot.command;
 
+import jerklib.util.Colors;
+
 /**
  * Created by portalBlock on 8/31/2014.
  */
@@ -23,6 +25,14 @@ public abstract class BasicCommand {
             }
         }
         return proceed;
+    }
+
+    public final void noPerms(CommandSender sender){
+        if(sender instanceof ConsoleCommandSender){
+            sender.sendMessage("Sorry you are not allowed to do that!");
+        }else{
+            sender.sendMessage(Colors.RED+"Sorry you are not allowed to do that!");
+        }
     }
 
 }

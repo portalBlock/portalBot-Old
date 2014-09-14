@@ -27,6 +27,7 @@ public class CommandManager {
         commandMap.put("remember", Remember.class);
         commandMap.put("potato", Potato.class);
         commandMap.put("op", Op.class);
+        commandMap.put("avatar", Avatar.class);
     }
 
     public static void handle(CommandSender sender, String command, String[] args){

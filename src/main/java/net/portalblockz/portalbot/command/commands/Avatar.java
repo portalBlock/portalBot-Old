@@ -25,6 +25,10 @@ public class Avatar extends BasicCommand {
 
     @Override
     public void handle(CommandSender sender, String[] args) {
+        if(true){
+            sender.sendMessage("Disabled because its spammy snd doesnt work :O");
+            return;
+        }
         if(sender instanceof ConsoleCommandSender){
             sender.sendMessage("You can't do that, sorry.");
             return;
@@ -33,10 +37,10 @@ public class Avatar extends BasicCommand {
         if(args.length < 1){
             name = args[0];
         }
-        String url = String.format("https://minotar.net/avatar/%s.png", name);
+        String url = String.format("https://minotar.net/avatar/%s/50.png", name);
         try{
             BufferedImage image = ImageIO.read(new URL(url));
-            ImageMessage message = new ImageMessage(image, image.getHeight(), ImageChar.BLOCK.getChar());
+            ImageMessage message = new ImageMessage(image, 50, ImageChar.CUSTOM.getChar());
             message.sendToChannel(((UserCommandSender)sender).getSession().getChannel(((UserCommandSender) sender).getChannel()));
         }catch (Exception e){
             sender.sendMessage("An error has occurred: "+e.getMessage());

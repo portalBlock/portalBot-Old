@@ -103,7 +103,7 @@ public class ImageMessage {
         return lines;
     }
 
-    private BufferedImage resizeImage(BufferedImage originalImage, int width, int height) {
+    public static BufferedImage resizeImage(BufferedImage originalImage, int width, int height) {
         AffineTransform af = new AffineTransform();
         af.scale(
                 width / (double) originalImage.getWidth(),
@@ -176,7 +176,13 @@ public class ImageMessage {
 
     public void sendToChannel(Channel channel) {
         for (String line : lines) {
-            channel.say(ChatTrans.translateColorCodes(line));
+            channel.say(ChatTrans.translateColorCodes(ChatColor.translateAlternateColorCodes('&', line)));
+            try{
+                Thread.sleep(500);
+            }catch (Exception e){
+                channel.say("Error");
+                return;
+            }
         }
     }
 

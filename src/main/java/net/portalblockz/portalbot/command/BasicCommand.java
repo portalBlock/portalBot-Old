@@ -16,7 +16,7 @@ public abstract class BasicCommand {
 
     public abstract void handle(CommandSender sender, String[] args);
 
-    public final boolean shouldProceed(CommandSender sender){
+    public static boolean shouldProceed(CommandSender sender){
         boolean proceed = true;
         if(sender instanceof UserCommandSender){
             UserCommandSender ucs = (UserCommandSender) sender;

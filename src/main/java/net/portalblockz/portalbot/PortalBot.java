@@ -20,6 +20,7 @@ import net.portalblockz.portalbot.git.GitHubHandler;
 import net.portalblockz.portalbot.serverdata.ConnectionPack;
 import net.portalblockz.portalbot.serverdata.JSONConfigManager;
 import net.portalblockz.portalbot.serverdata.Server;
+import net.portalblockz.portalbot.smarts.SmartListener;
 import net.portalblockz.portalbot.webinterface.WebIntHandler;
 
 import java.io.File;
@@ -74,6 +75,7 @@ public class PortalBot{
             EventListener listener = new EventListener(pack, server);
             session.addIRCEventListener(listener);
             session.addIRCEventListener(new FeatureListener(pack, server));
+            session.addIRCEventListener(new SmartListener(server));
 
         }
 

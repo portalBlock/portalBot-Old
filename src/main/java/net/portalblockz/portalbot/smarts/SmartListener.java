@@ -20,6 +20,7 @@ import java.util.Map;
  * Created by portalBlock on 9/14/2014.
  */
 public class SmartListener implements IRCEventListener {
+    private final int MAX_WARNS = 3;
     private Map<String, IRCUser> users = new HashMap<>();
     private Map<String, String> lastSaid = new HashMap<>();
     private Map<String, Long> chatCooldown = new HashMap<>();
@@ -36,6 +37,7 @@ public class SmartListener implements IRCEventListener {
             if(users.get(me.getNick()) == null) users.put(me.getNick(), new IRCUser());
             checkLastSaid(me);
             checkCoolCheck(me);
+            checkCaps(me);
         }
     }
 
@@ -46,9 +48,9 @@ public class SmartListener implements IRCEventListener {
         }else{
             IRCUser user = users.get(e.getNick());
             user.setSpam(user.getSpam()+1);
-            if(user.getSpam() >= 4){
+            if(user.getSpam() >= MAX_WARNS){
                 e.getChannel().kick(e.getNick(), "Please do not spam the chat!");
-                chatCooldown.remove(e.getNick());
+                //chatCooldown.remove(e.getNick());
             }else{
                 e.getSession().notice(e.getNick(), Colors.RED+"Please do not spam things! Warning "+user.getSpam()+"/3");
             }
@@ -65,7 +67,7 @@ public class SmartListener implements IRCEventListener {
             if (message.equalsIgnoreCase(lastMessage) || message.contains(lastMessage) && diff <= 3) {
                 IRCUser user = users.get(e.getNick());
                 user.setRepeat(user.getRepeat()+1);
-                if(user.getRepeat() >= 4){
+                if(user.getRepeat() >= MAX_WARNS){
                     e.getChannel().kick(e.getNick(), "Please do not repeat things more then 3 times!");
                 }else{
                     e.getSession().notice(e.getNick(), Colors.RED+"Please do not repeat things! Warning "+user.getRepeat()+"/3");
@@ -74,6 +76,29 @@ public class SmartListener implements IRCEventListener {
             }
         }
         lastSaid.put(e.getNick(), e.getMessage());
+    }
+
+    public void checkCaps(MessageEvent e){
+        if(server.getStaff().contains(e.getNick())) return;
+        double upperCaseCount = 0;
+        String message = e.getMessage();
+        for (int i = 0; i < message.length(); i++){
+            if(Character.isUpperCase(message.charAt(i))){
+                upperCaseCount++;
+            }
+        }
+        double maxPer = 50;
+        double tempNum = upperCaseCount / message.length();
+        double percent = tempNum * 100;
+        if (percent >= maxPer) {
+            IRCUser user = users.get(e.getNick());
+            user.setCaps(user.getCaps()+1);
+            if(user.getCaps() >= MAX_WARNS){
+                e.getChannel().kick(e.getNick(), "Please do not use so much caps!");
+            }else{
+                e.getSession().notice(e.getNick(), Colors.RED+"Please don't use more then 50% caps in a message!");
+            }
+        }
     }
 
     public boolean coolCheck(String name) {

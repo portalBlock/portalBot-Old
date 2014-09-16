@@ -12,7 +12,7 @@ package net.portalblockz.portalbot.smarts;
  */
 public class IRCUser {
 
-    private int repeat, spam = 0;
+    private int repeat, spam, caps = 0;
 
     public int getRepeat() {
         return repeat;
@@ -28,5 +28,13 @@ public class IRCUser {
 
     public void setSpam(int spam) {
         this.spam = spam;
+    }
+
+    public int getCaps() {
+        return caps;
+    }
+
+    public void setCaps(int caps) {
+        this.caps = caps;
     }
 }

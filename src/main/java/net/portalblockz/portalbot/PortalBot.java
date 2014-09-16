@@ -72,8 +72,8 @@ public class PortalBot{
             Session session = manager.requestConnection(server.getHost(), server.getPort());
             ConnectionPack pack = new ConnectionPack(manager, session, server.getHost());
             connections.add(pack);
-            EventListener listener = new EventListener(pack, server);
-            session.addIRCEventListener(listener);
+            //EventListener listener = new EventListener(pack, server);
+            session.addIRCEventListener(new EventListener(pack, server));
             session.addIRCEventListener(new FeatureListener(pack, server));
             session.addIRCEventListener(new SmartListener(server));
 

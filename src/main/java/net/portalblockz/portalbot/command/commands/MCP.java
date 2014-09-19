@@ -8,7 +8,6 @@
 package net.portalblockz.portalbot.command.commands;
 
 import jerklib.util.Colors;
-import net.portalblockz.portalbot.ChatColor;
 import net.portalblockz.portalbot.ChatTrans;
 import net.portalblockz.portalbot.command.*;
 
@@ -26,44 +25,33 @@ public class MCP extends BasicCommand {
             sender.sendMessage("Not implemented!");
             return;
         }
-        String host, port;
-        if(args.length >= 1){
-            String[] temp = args[0].split(":");
-            if(temp.length > 1){
-                host = temp[0];
-                port = temp[1];
-            }else{
-                host = temp[0];
-                port = "25565";
-            }
-        }else{
-            sender.sendMessage("Please include an address to ping!");
-            return;
-        }
         UserCommandSender ucs = (UserCommandSender) sender;
-        String msg = ping(host, Integer.valueOf(port));
-        if(msg == null){
-            ucs.getSession().getChannel(ucs.getChannel()).say("Unable to ping server, is it down?");
+        if(args.length < 1){
+            ucs.getSession().notice(ucs.getName(), Colors.RED+"Please include the address to ping!");
             return;
         }
-        ucs.getSession().getChannel(ucs.getChannel()).say("("+ucs.getName()+") "+ChatTrans.translateColorCodes(msg));
-    }
 
-    private String ping(String ip, int port){
-        PingerUtil pinger = new PingerUtil();
-        pinger.setAddress(new InetSocketAddress(ip, port));
-        PingerUtil.StatusResponse response = null;
-        try{
-            response = pinger.fetchData();
-        }catch (IOException ignored){
+        String[] set = args[0].split(":");
 
+        String address = set[0];
+        int port = 25565;
+        if(set.length >= 2){
+            port = Integer.parseInt(set[1]);
         }
-        if(response == null) return null;
-        String motd = response.getDescription();
-        String version = response.getVersion().getName();
-        String cur = response.getPlayers().getOnline()+"";
-        String max = response.getPlayers().getMax()+"";
-        String text = motd + ChatColor.RED+" - "+version+" - "+cur+"/"+max;
-        return (text.replaceAll("null", ""));
+
+        PingerUtil util = new PingerUtil();
+        util.setAddress(new InetSocketAddress(address, port));
+        try{
+            PingerUtil.StatusResponse response  = util.fetchData();
+            String motd = response.getDescription();
+            String version = response.getVersion().getName();
+            String cur = response.getPlayers().getOnline()+"";
+            String max = response.getPlayers().getMax()+"";
+            String text = "("+ucs.getName()+") "+ChatTrans.translateColorCodes(motd)+Colors.RED+" - "+version+" - "+cur+"/"+max;
+            ucs.getSession().getChannel(ucs.getChannel()).say(text.replaceAll("null", ""));
+        }catch (IOException e){
+            e.printStackTrace();
+            ucs.getSession().getChannel(ucs.getChannel()).say(Colors.RED+"Unable to ping server!");
+        }
     }
 }

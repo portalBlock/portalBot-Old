@@ -28,6 +28,8 @@ public class CommandManager {
         commandMap.put("potato", Potato.class);
         commandMap.put("op", Op.class);
         commandMap.put("avatar", Avatar.class);
+        commandMap.put("mcp", MCP.class);
+        commandMap.put("mcping", MCP.class);
     }
 
     public static void handle(CommandSender sender, String command, String[] args){

@@ -51,6 +51,7 @@ public class WebIntHandler implements HttpHandler {
             defaultContent = reply.toString();
         }else{
             customFile = true;
+            reply = readFile(indexFile);
         }
         year = new SimpleDateFormat("yyyy").format(new Date());
     }

@@ -29,6 +29,7 @@ public class JSONConfigManager {
     private JSONObject configObject;
     private List<Server> serverList = new ArrayList<>();
     private Map<String, List<String>> repoMap = new HashMap<>();
+    private List<String> blacklistWords = new ArrayList<>();
     private static JSONConfigManager instance;
 
     public static JSONConfigManager getInstance() {
@@ -64,6 +65,33 @@ public class JSONConfigManager {
             System.out.println(String.format("%s %s %s %s %s", server.getString("host"), server.getString("username"), server.getString("password"), server.getInt("port"), server.getString("prefix").charAt(0)));
         }
         serializeRepos();
+        serializeBlacklist();
+    }
+
+    public void serializeBlacklist(){
+        JSONArray blackList = configObject.optJSONArray("blacklist-words");
+        if(blackList != null){
+            for(int i = 0; i < blackList.length(); i++){
+                if(!blacklistWords.contains(blackList.getString(i).toLowerCase())){
+                    blacklistWords.add(blackList.getString(i).toLowerCase());
+                }
+            }
+        }
+    }
+
+    public boolean isBlacklistedWord(String[] s){
+        for(String str : s){
+            if(blacklistWords.contains(str.toLowerCase())){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void addBlacklistWord(String s){
+        if(!blacklistWords.contains(s.toLowerCase())){
+            blacklistWords.add(s.toLowerCase());
+        }
     }
 
     public void serializeRepos(){

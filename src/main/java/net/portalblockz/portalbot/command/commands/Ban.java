@@ -36,7 +36,7 @@ public class Ban extends BasicCommand {
         }
     }
 
-    private void ban(Channel channel, String user, String reason){
+    public static void ban(Channel channel, String user, String reason){
         if(channel == null) return;
         channel.kick(user, reason);
         channel.getSession().sayPrivate("chanserv", String.format("ban %s %s", channel.getName(), user));

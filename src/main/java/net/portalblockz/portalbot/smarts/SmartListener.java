@@ -11,6 +11,8 @@ import jerklib.events.IRCEvent;
 import jerklib.events.MessageEvent;
 import jerklib.listeners.IRCEventListener;
 import jerklib.util.Colors;
+import net.portalblockz.portalbot.command.commands.Ban;
+import net.portalblockz.portalbot.serverdata.JSONConfigManager;
 import net.portalblockz.portalbot.serverdata.Server;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -37,10 +39,21 @@ public class SmartListener implements IRCEventListener {
         if(ircEvent.getType() == IRCEvent.Type.CHANNEL_MESSAGE){
             MessageEvent me = (MessageEvent)ircEvent;
             if(users.get(me.getNick().toLowerCase()) == null) users.put(me.getNick().toLowerCase(), new IRCUser(me.getNick()));
+            if(checkBlacklist(me)) return;
             checkLastSaid(me);
             checkCoolCheck(me);
             checkCaps(me);
         }
+    }
+
+    private boolean checkBlacklist(MessageEvent e){
+        boolean bl = JSONConfigManager.getInstance().isBlacklistedWord(e.getMessage().split(" "));
+        if(bl){
+            e.getChannel().kick(e.getNick(), "Do not use black listed words!");
+            Ban.ban(e.getChannel(), e.getNick(), "Do not use black listed words!");
+            return true;
+        }
+        return false;
     }
 
     private void checkCoolCheck(MessageEvent e){

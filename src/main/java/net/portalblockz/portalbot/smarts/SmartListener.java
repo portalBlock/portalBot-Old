@@ -105,7 +105,7 @@ public class SmartListener implements IRCEventListener {
         double maxPer = 50;
         double tempNum = upperCaseCount / message.length();
         double percent = tempNum * 100;
-        if (percent >= maxPer) {
+        if (percent >= maxPer && message.length() > 5) {
             IRCUser user = users.get(e.getNick().toLowerCase());
             user.setCaps(user.getCaps()+1);
             if(user.getCaps() >= MAX_WARNS){

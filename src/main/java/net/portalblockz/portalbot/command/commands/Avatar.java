@@ -26,7 +26,7 @@ public class Avatar extends BasicCommand {
     @Override
     public void handle(CommandSender sender, String[] args) {
         if(true){
-            sender.sendMessage("Disabled because its spammy snd doesnt work :O");
+            sender.sendMessage("Disabled because its spammy and doesn't work :O");
             return;
         }
         if(sender instanceof ConsoleCommandSender){

@@ -27,7 +27,6 @@ public class CommandManager {
         commandMap.put("remember", Remember.class);
         commandMap.put("potato", Potato.class);
         commandMap.put("op", Op.class);
-        commandMap.put("avatar", Avatar.class);
         commandMap.put("mcp", MCP.class);
         commandMap.put("mcping", MCP.class);
         commandMap.put("resetuser", ResetUser.class);

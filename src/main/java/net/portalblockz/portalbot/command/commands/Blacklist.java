@@ -10,17 +10,24 @@ package net.portalblockz.portalbot.command.commands;
 import net.portalblockz.portalbot.command.BasicCommand;
 import net.portalblockz.portalbot.command.CommandSender;
 import net.portalblockz.portalbot.command.UserCommandSender;
+import net.portalblockz.portalbot.serverdata.JSONConfigManager;
 
 /**
- * Created by portalBlock on 9/9/2014.
+ * Created by portalBlock on 9/20/2014.
  */
-public class Potato extends BasicCommand {
+public class Blacklist extends BasicCommand {
 
     @Override
     public void handle(CommandSender sender, String[] args) {
         if(sender instanceof UserCommandSender){
-            UserCommandSender ucs = (UserCommandSender) sender;
-            ucs.getSession().getChannel(ucs.getChannel()).action("gives Wferr a warm fluffy potato!");
+            sender.sendMessage("This can only be done from console!");
+            return;
         }
+        if(args.length < 1){
+            sender.sendMessage("Please include a word to blacklist!");
+            return;
+        }
+        JSONConfigManager.getInstance().addBlacklistWord(args[0]);
+        sender.sendMessage(args[0].toLowerCase()+" has been temporarily added to the blacklist! To add it permanently please add it in config.json.");
     }
 }

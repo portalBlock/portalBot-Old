@@ -1,8 +1,16 @@
+/*
+ * Copyright (c) 2014 portalBlock. This work is provided AS-IS without any warranty.
+ * You must provide a link back to the original project and clearly point out any changes made to this project.
+ * This license must be included in all project files.
+ * Any changes merged with this project are property of the copyright holder but may include the author's name.
+ */
+
 package net.portalblockz.portalbot.git;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import net.portalblockz.portalbot.Utils;
+import net.portalblockz.portalbot.git.github.GitHubPullRequestEvent;
 import net.portalblockz.portalbot.git.github.GitHubPushEvent;
 
 import java.io.IOException;
@@ -21,6 +29,7 @@ public class GitHubHandler implements HttpHandler {
 
     public GitHubHandler(){
         eventHandlers.put("push", GitHubPushEvent.class);
+        eventHandlers.put("pull_request", GitHubPullRequestEvent.class);
     }
 
     @Override

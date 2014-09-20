@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2014 portalBlock. This work is provided AS-IS without any warranty.
+ * You must provide a link back to the original project and clearly point out any changes made to this project.
+ * This license must be included in all project files.
+ * Any changes merged with this project are property of the copyright holder but may include the author's name.
+ */
+
 package net.portalblockz.portalbot.command;
 
 import net.portalblockz.portalbot.command.commands.*;
@@ -19,6 +26,11 @@ public class CommandManager {
         commandMap.put("kick", Kick.class);
         commandMap.put("remember", Remember.class);
         commandMap.put("potato", Potato.class);
+        commandMap.put("op", Op.class);
+        commandMap.put("mcp", MCP.class);
+        commandMap.put("mcping", MCP.class);
+        commandMap.put("resetuser", ResetUser.class);
+        commandMap.put("blacklist", Blacklist.class);
     }
 
     public static void handle(CommandSender sender, String command, String[] args){

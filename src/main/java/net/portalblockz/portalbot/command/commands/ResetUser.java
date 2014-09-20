@@ -7,22 +7,25 @@
 
 package net.portalblockz.portalbot.command.commands;
 
-import jerklib.util.Colors;
-import net.portalblockz.portalbot.PortalBot;
 import net.portalblockz.portalbot.command.BasicCommand;
 import net.portalblockz.portalbot.command.CommandSender;
 import net.portalblockz.portalbot.command.ConsoleCommandSender;
+import net.portalblockz.portalbot.smarts.SmartListener;
 
 /**
- * Created by portalBlock on 9/1/2014.
+ * Created by portalBlock on 9/19/2014.
  */
-public class Stop extends BasicCommand {
+public class ResetUser extends BasicCommand {
 
     @Override
     public void handle(CommandSender sender, String[] args) {
         if(sender instanceof ConsoleCommandSender || shouldProceed(sender)){
-            sender.sendMessage("Shutting down the bot!");
-            PortalBot.getInstance().stop();
+            if(args.length < 1){
+                sender.sendMessage("Please include a user to reset!");
+                return;
+            }
+            SmartListener.flushUser(args[0]);
+            sender.sendMessage("Done!");
         }else{
             noPerms(sender);
         }

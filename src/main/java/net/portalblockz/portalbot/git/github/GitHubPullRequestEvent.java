@@ -20,12 +20,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 /**
- * Created by portalBlock on 8/30/2014.
+ * Created by portalBlock on 9/12/2014.
  */
-public class GitHubPushEvent extends IGitEvent {
+public class GitHubPullRequestEvent extends IGitEvent {
 
     @Override
-    public void handle(HttpExchange httpExchange){
+    public void handle(HttpExchange httpExchange) {
         InputStream stream = httpExchange.getRequestBody();
         BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
         String s;
@@ -38,25 +38,20 @@ public class GitHubPushEvent extends IGitEvent {
 
         }
         JSONObject object = new JSONObject(jsonBuilder.toString());
-        JSONObject array;
-        String msg, name, repo;
-        name = Colors.RED+"An internal error has occurred and the author of this push was not readable.";
+        String msg, name, repo, action, number;
+        /*name = Colors.RED+"An internal error has occurred and the author of this push was not readable.";
         msg = Colors.RED+"An internal error has occurred and the message of this push was not readable.";
-        repo = Colors.RED+"An internal error has occurred and the repository name of this push was not readable.";
-        if((array = object.optJSONObject("head_commit")) != null){
-            msg = String.valueOf(object.getJSONArray("commits").getJSONObject(0).getString("message"));
-            JSONObject commiter = array.optJSONObject("committer");
-            if(commiter != null){
-                name = commiter.getString("name");
-            }
+        repo = Colors.RED+"An internal error has occurred and the repository name of this push was not readable.";*/
+        name = object.getJSONObject("sender").getString("login");
+        repo = object.getJSONObject("repository").getString("name");
+        msg = object.getJSONObject("pull_request").getString("title");
+        action = object.getString("action");
+        number = String.valueOf(object.getInt("number"));
+        if(action.equals("closed") && object.getJSONObject("pull_request").getBoolean("merged")){
+            action = "merged";
         }
-        JSONObject repoJ = object.optJSONObject("repository");
-        if(repoJ != null){
-            repo = repoJ.getString("name");
-        }
-        String totMsg = String.format(Colors.BLACK+"["+Colors.PURPLE+"%s"+Colors.BLACK+"] "+Colors.LIGHT_GRAY+"%s"+Colors.NORMAL+" has pushed: "+Colors.CYAN+"%s", repo, name, msg);
+        String totMsg = String.format(Colors.BLACK+"["+Colors.PURPLE+"%s"+Colors.BLACK+"] "+Colors.LIGHT_GRAY+"%s"+Colors.NORMAL+" has %s pull request #%s: "+Colors.CYAN+"%s", repo, name, action, number, msg);
         //PortalBot.getInstance().globalSpeak(totMsg);
         PortalBot.getInstance().sayInChannels(totMsg, JSONConfigManager.getInstance().getChannelsForRepo(repo));
     }
-
 }

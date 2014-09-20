@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2014 portalBlock. This work is provided AS-IS without any warranty.
+ * You must provide a link back to the original project and clearly point out any changes made to this project.
+ * This license must be included in all project files.
+ * Any changes merged with this project are property of the copyright holder but may include the author's name.
+ */
+
 package net.portalblockz.portalbot.command.commands;
 
 import jerklib.Channel;
@@ -14,7 +21,7 @@ public class Ban extends BasicCommand {
     @Override
     public void handle(CommandSender sender, String[] args) {
         if(!shouldProceed(sender)){
-            sender.sendMessage(Colors.RED+"Sorry you are not allowed to do that!");
+            noPerms(sender);
             return;
         }
         if(args.length < 1){
@@ -29,7 +36,7 @@ public class Ban extends BasicCommand {
         }
     }
 
-    private void ban(Channel channel, String user, String reason){
+    public static void ban(Channel channel, String user, String reason){
         if(channel == null) return;
         channel.kick(user, reason);
         channel.getSession().sayPrivate("chanserv", String.format("ban %s %s", channel.getName(), user));

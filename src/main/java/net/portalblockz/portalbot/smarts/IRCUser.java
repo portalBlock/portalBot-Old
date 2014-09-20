@@ -12,7 +12,12 @@ package net.portalblockz.portalbot.smarts;
  */
 public class IRCUser {
 
+    private String name;
     private int repeat, spam, caps = 0;
+
+    public IRCUser(String name){
+        this.name = name;
+    }
 
     public int getRepeat() {
         return repeat;
@@ -36,5 +41,13 @@ public class IRCUser {
 
     public void setCaps(int caps) {
         this.caps = caps;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

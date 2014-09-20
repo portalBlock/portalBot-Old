@@ -36,7 +36,7 @@ public class SmartListener implements IRCEventListener {
     public void receiveEvent(IRCEvent ircEvent) {
         if(ircEvent.getType() == IRCEvent.Type.CHANNEL_MESSAGE){
             MessageEvent me = (MessageEvent)ircEvent;
-            if(users.get(me.getNick()) == null) users.put(me.getNick(), new IRCUser());
+            if(users.get(me.getNick().toLowerCase()) == null) users.put(me.getNick().toLowerCase(), new IRCUser(me.getNick()));
             checkLastSaid(me);
             checkCoolCheck(me);
             checkCaps(me);
@@ -48,7 +48,7 @@ public class SmartListener implements IRCEventListener {
         if(coolCheck(e.getNick())){
             chatCooldown.put(e.getNick(), System.currentTimeMillis());
         }else{
-            IRCUser user = users.get(e.getNick());
+            IRCUser user = users.get(e.getNick().toLowerCase());
             user.setSpam(user.getSpam()+1);
             if(user.getSpam() >= MAX_WARNS){
                 e.getChannel().kick(e.getNick(), "Please do not spam the chat!");
@@ -67,7 +67,7 @@ public class SmartListener implements IRCEventListener {
         if(lastMessage != null) {
             int diff = message.length() - lastMessage.length();
             if (message.equalsIgnoreCase(lastMessage) || message.contains(lastMessage) && diff <= 3) {
-                IRCUser user = users.get(e.getNick());
+                IRCUser user = users.get(e.getNick().toLowerCase());
                 user.setRepeat(user.getRepeat()+1);
                 if(user.getRepeat() >= MAX_WARNS){
                     e.getChannel().kick(e.getNick(), "Please do not repeat things more then 3 times!");
@@ -93,7 +93,7 @@ public class SmartListener implements IRCEventListener {
         double tempNum = upperCaseCount / message.length();
         double percent = tempNum * 100;
         if (percent >= maxPer) {
-            IRCUser user = users.get(e.getNick());
+            IRCUser user = users.get(e.getNick().toLowerCase());
             user.setCaps(user.getCaps()+1);
             if(user.getCaps() >= MAX_WARNS){
                 e.getChannel().kick(e.getNick(), "Please do not use so much caps!");
@@ -116,13 +116,17 @@ public class SmartListener implements IRCEventListener {
         JSONArray content = new JSONArray();
         for(Map.Entry<String, IRCUser> entry : users.entrySet()){
             JSONObject user = new JSONObject();
-            user.put("name", entry.getKey());
+            user.put("name", entry.getValue().getName());
             user.put("caps", entry.getValue().getCaps());
             user.put("spam", entry.getValue().getSpam());
             user.put("repeat", entry.getValue().getRepeat());
             content.put(user);
         }
         return content.toString();
+    }
+
+    public static void flushUser(String name){
+        users.remove(name.toLowerCase());
     }
 
 }

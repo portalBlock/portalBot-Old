@@ -30,6 +30,7 @@ public class CommandManager {
         commandMap.put("avatar", Avatar.class);
         commandMap.put("mcp", MCP.class);
         commandMap.put("mcping", MCP.class);
+        commandMap.put("resetuser", ResetUser.class);
     }
 
     public static void handle(CommandSender sender, String command, String[] args){

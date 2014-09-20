@@ -12,6 +12,8 @@ import jerklib.events.MessageEvent;
 import jerklib.listeners.IRCEventListener;
 import jerklib.util.Colors;
 import net.portalblockz.portalbot.serverdata.Server;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +23,7 @@ import java.util.Map;
  */
 public class SmartListener implements IRCEventListener {
     private final int MAX_WARNS = 3;
-    private Map<String, IRCUser> users = new HashMap<>();
+    private static Map<String, IRCUser> users = new HashMap<>();
     private Map<String, String> lastSaid = new HashMap<>();
     private Map<String, Long> chatCooldown = new HashMap<>();
     private Server server;
@@ -108,6 +110,19 @@ public class SmartListener implements IRCEventListener {
         } else {
             return true;
         }
+    }
+
+    public static String getJSONInfo(){
+        JSONArray content = new JSONArray();
+        for(Map.Entry<String, IRCUser> entry : users.entrySet()){
+            JSONObject user = new JSONObject();
+            user.put("name", entry.getKey());
+            user.put("caps", entry.getValue().getCaps());
+            user.put("spam", entry.getValue().getSpam());
+            user.put("repeat", entry.getValue().getRepeat());
+            content.put(user);
+        }
+        return content.toString();
     }
 
 }

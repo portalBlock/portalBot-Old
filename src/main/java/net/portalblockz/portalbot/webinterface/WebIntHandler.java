@@ -7,12 +7,16 @@
 
 package net.portalblockz.portalbot.webinterface;
 
+import com.google.common.hash.HashCode;
+import com.google.common.hash.Hashing;
+import com.google.common.io.Files;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import jerklib.Channel;
 import net.portalblockz.portalbot.PortalBot;
 import net.portalblockz.portalbot.Utils;
 import net.portalblockz.portalbot.serverdata.ConnectionPack;
+import net.portalblockz.portalbot.smarts.SmartListener;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -28,11 +32,16 @@ public class WebIntHandler implements HttpHandler {
     private String defaultContent;
     private boolean customFile;
     private String year;
+    private String indexHash;
+    private File indexFile;
+    private String reply;
 
     public WebIntHandler() throws Exception{
         customFile = false;
-        File file = new File("index.html");
-        if(!file.exists()){
+        indexFile = new File("index.html");
+        HashCode hash = Files.hash(indexFile, Hashing.md5());
+        indexHash = hash.toString();
+        if(!indexFile.exists()){
             StringBuilder reply = new StringBuilder();
             reply.append("<html><head><title>portalBot</title></head><body>");
             reply.append("<h1 style=\"color:red\">portalBot IRC Bot</h1>");
@@ -53,15 +62,18 @@ public class WebIntHandler implements HttpHandler {
         String text =
                 "<p>Welcome this is the beginning of a web interface for portalBot, its a WIP and right now does not have anything but this message on it!</p>";*/
         String footer = "<br><center>&copy; portalBlock "+year+"</center>";
-        String reply;
         if(customFile){
-            reply = readFile(new File("index.html"));
+            if(!indexHash.equals(Files.hash(indexFile, Hashing.md5()).toString())) {
+                reply = readFile(indexFile);
+            }
         }else{
             reply = defaultContent;
         }
-        reply = reply.replaceAll("%servers%", getJSONServers());
+        String newReply;
+        newReply = reply.replaceAll("%servers%", getJSONServers());
+        newReply = newReply.replaceAll("%warns%", SmartListener.getJSONInfo());
         //reply = reply.replaceAll("%stats%", getJSONSystemStats());
-        sendReply(httpExchange, reply + footer);
+        sendReply(httpExchange, newReply + footer);
     }
 
     private void sendReply(HttpExchange httpExchange, String msg){

@@ -47,6 +47,16 @@
             <artifactId>guava</artifactId>
             <version>18.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-core</artifactId>
+            <version>1.18.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-server</artifactId>
+            <version>1.18.1</version>
+        </dependency>
     </dependencies>
     <build>
         <finalName>portalBot</finalName>
@@ -120,6 +130,8 @@
                                     <include>com.google.code.gson:gson</include>
                                     <include>gson:*</include>
                                     <include>com.google.guava:guava</include>
+                                    <include>com.sun.jersey:jersey-core</include>
+                                    <include>com.sun.jersey:jersey-server</include>
                                 </includes>
                             </artifactSet>
                         </configuration>

@@ -7,6 +7,9 @@
 
 package net.portalblockz.portalbot;
 
+import net.portalblockz.portalbot.smarts.SmartListener;
+
+import javax.ws.rs.core.Response;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -22,6 +25,10 @@ public class Utils {
         SimpleDateFormat sdf = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z", Locale.US);
         sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
         return sdf.format(calendar.getTime());
+    }
+
+    public static Response formResponse(String str){
+        return Response.status(200).entity(str).header("Server", "portalBot IRC Bot Webserver").build();
     }
 
 }

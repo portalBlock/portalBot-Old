@@ -7,6 +7,9 @@
 
 package net.portalblockz.portalbot;
 
+import com.sun.jersey.api.container.httpserver.HttpServerFactory;
+import com.sun.jersey.api.core.PackagesResourceConfig;
+import com.sun.jersey.api.core.ResourceConfig;
 import com.sun.net.httpserver.HttpServer;
 import jerklib.Channel;
 import jerklib.ConnectionManager;
@@ -23,9 +26,11 @@ import net.portalblockz.portalbot.serverdata.Server;
 import net.portalblockz.portalbot.smarts.SmartListener;
 import net.portalblockz.portalbot.webinterface.WebIntHandler;
 
+import javax.ws.rs.core.UriBuilder;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +39,7 @@ import java.util.Scanner;
 /**
  * Created by portalBlock on 8/31/2014.
  */
-public class PortalBot{
+public class PortalBot {
 
     //private ConsoleReader consoleReader;
     private JSONConfigManager configManager;
@@ -67,7 +72,7 @@ public class PortalBot{
         configManager = new JSONConfigManager(new File("config.json"));
 
         //Connect to servers
-        for(Server server : configManager.getServers()){
+        /*for(Server server : configManager.getServers()){
             ConnectionManager manager = new ConnectionManager(new Profile(server.getUsername()));
             Session session = manager.requestConnection(server.getHost(), server.getPort());
             ConnectionPack pack = new ConnectionPack(manager, session, server.getHost());
@@ -77,9 +82,14 @@ public class PortalBot{
             session.addIRCEventListener(new FeatureListener(pack, server));
             session.addIRCEventListener(new SmartListener(server));
 
-        }
+        }*/
 
         //Start github hook and web interface
+        /*try{
+            createHttpServer().start();
+        }catch (IOException ignored){
+
+        }*/
         try{
             HttpServer httpServer = HttpServer.create(new InetSocketAddress(5000), 0);
             httpServer.createContext("/githubapi", new GitHubHandler());
@@ -95,6 +105,8 @@ public class PortalBot{
         }catch (IOException e){
             e.printStackTrace();
         }
+
+
 
         //Set running to true for input readers
         running = true;
@@ -135,6 +147,11 @@ public class PortalBot{
                 e.printStackTrace();
             }
         }while (running);*/
+    }
+
+    private static HttpServer createHttpServer() throws IOException {
+        ResourceConfig resourceConfig = new PackagesResourceConfig("net.portalblockz.portalbot.webinterface.api");
+        return HttpServerFactory.create(UriBuilder.fromUri("http://" + InetAddress.getLocalHost().getCanonicalHostName() + "/").port(5001).build(), resourceConfig);
     }
 
     public void globalSpeak(String s){

@@ -24,6 +24,8 @@
             <groupId>jerklib</groupId>
             <artifactId>jerklib</artifactId>
             <version>latest</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/jerklib.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.json</groupId>

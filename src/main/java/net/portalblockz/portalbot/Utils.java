@@ -28,7 +28,11 @@ public class Utils {
     }
 
     public static Response formResponse(String str){
-        return Response.status(200).entity(str).header("Server", "portalBot IRC Bot Webserver").build();
+        return formResponse(str, 200);
+    }
+
+    public static Response formResponse(String str, int code){
+        return Response.status(code).entity(str).header("Server", "portalBot IRC Bot Webserver").build();
     }
 
 }

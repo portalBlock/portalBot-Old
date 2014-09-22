@@ -39,7 +39,7 @@ public class GitHubHandler implements HttpHandler {
         if(eventHandler != null){
             //eventHandler.handle(httpExchange);
             try{
-                eventHandler.newInstance().handle(httpExchange);
+                eventHandler.newInstance().handle("");
             }catch (Exception e){
                 e.printStackTrace();
             }

@@ -25,8 +25,8 @@ import java.io.InputStreamReader;
 public class GitHubPullRequestEvent extends IGitEvent {
 
     @Override
-    public void handle(HttpExchange httpExchange) {
-        InputStream stream = httpExchange.getRequestBody();
+    public void handle(String body) {
+        /*InputStream stream = httpExchange.getRequestBody();
         BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
         String s;
         StringBuilder jsonBuilder = new StringBuilder();
@@ -36,8 +36,8 @@ public class GitHubPullRequestEvent extends IGitEvent {
             }
         }catch (IOException e){
 
-        }
-        JSONObject object = new JSONObject(jsonBuilder.toString());
+        }*/
+        JSONObject object = new JSONObject(body);
         String msg, name, repo, action, number;
         /*name = Colors.RED+"An internal error has occurred and the author of this push was not readable.";
         msg = Colors.RED+"An internal error has occurred and the message of this push was not readable.";

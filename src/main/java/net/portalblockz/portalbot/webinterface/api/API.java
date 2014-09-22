@@ -21,7 +21,7 @@ import javax.ws.rs.core.Response;
  * Created by portalBlock on 9/21/2014.
  */
 @Path("api")
-public class Warns {
+public class API {
 
     @GET
     @Path("warns")

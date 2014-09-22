@@ -35,6 +35,8 @@ import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 /**
  * Created by portalBlock on 8/31/2014.
@@ -45,6 +47,7 @@ public class PortalBot {
     private JSONConfigManager configManager;
     private List<ConnectionPack> connections = new ArrayList<>();
     private static PortalBot instance;
+    private static HttpServer httpServer;
     private boolean running;
 
     public static PortalBot getInstance() {
@@ -72,7 +75,7 @@ public class PortalBot {
         configManager = new JSONConfigManager(new File("config.json"));
 
         //Connect to servers
-        /*for(Server server : configManager.getServers()){
+        for(Server server : configManager.getServers()){
             ConnectionManager manager = new ConnectionManager(new Profile(server.getUsername()));
             Session session = manager.requestConnection(server.getHost(), server.getPort());
             ConnectionPack pack = new ConnectionPack(manager, session, server.getHost());
@@ -82,27 +85,29 @@ public class PortalBot {
             session.addIRCEventListener(new FeatureListener(pack, server));
             session.addIRCEventListener(new SmartListener(server));
 
-        }*/
+        }
 
         //Start github hook and web interface
-        /*try{
-            createHttpServer().start();
-        }catch (IOException ignored){
+        Executors.newSingleThreadExecutor().execute(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    httpServer = createHttpServer();
+                    httpServer.start();
+                }catch (IOException ignored){
 
-        }*/
+                }
+            }
+        });
         try{
             HttpServer httpServer = HttpServer.create(new InetSocketAddress(5000), 0);
-            httpServer.createContext("/githubapi", new GitHubHandler());
-            try{
-                httpServer.createContext("/", new WebIntHandler());
-            }catch (Exception e){
-
-            }
+            //httpServer.createContext("/githubapi", new GitHubHandler());
+            httpServer.createContext("/", new WebIntHandler());
             httpServer.setExecutor(null);
             httpServer.start();
-            print("GitHub Hook server running on port 5000");
-            print("Set hook to use http://<server_address>:5000/githubapi");
-        }catch (IOException e){
+            //print("GitHub Hook server running on port 5000");
+            //print("Set hook to use http://<server_address>:5000/githubapi");
+        }catch (Exception e){
             e.printStackTrace();
         }
 
@@ -149,8 +154,13 @@ public class PortalBot {
         }while (running);*/
     }
 
-    private static HttpServer createHttpServer() throws IOException {
-        ResourceConfig resourceConfig = new PackagesResourceConfig("net.portalblockz.portalbot.webinterface.api");
+    private HttpServer createHttpServer() throws IOException {
+        final String BASE = "net.portalblockz.portalbot.webinterface.api";
+        String[] packs = new String[]{
+                BASE,
+                BASE + ".git"
+        };
+        PackagesResourceConfig resourceConfig = new PackagesResourceConfig(packs);
         return HttpServerFactory.create(UriBuilder.fromUri("http://" + InetAddress.getLocalHost().getCanonicalHostName() + "/").port(5001).build(), resourceConfig);
     }
 
@@ -181,6 +191,7 @@ public class PortalBot {
     }
 
     public void stop(){
+        httpServer.stop(0);
         System.out.println("Leaving IRC channels...");
         for(ConnectionPack pack : connections){
             for(Channel channel : pack.getSession().getChannels()){

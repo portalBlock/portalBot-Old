@@ -33,10 +33,14 @@ import java.io.PrintStream;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 /**
  * Created by portalBlock on 8/31/2014.
@@ -91,6 +95,12 @@ public class PortalBot {
         Executors.newSingleThreadExecutor().execute(new Runnable() {
             @Override
             public void run() {
+                //Disable annoying logging
+                for (String l : Collections.list(LogManager.getLogManager().getLoggerNames())) {
+                    if (l.startsWith("com.sun.jersey")) {
+                        Logger.getLogger(l).setLevel(Level.OFF);
+                    }
+                }
                 try{
                     httpServer = createHttpServer();
                     httpServer.start();

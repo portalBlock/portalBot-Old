@@ -47,7 +47,7 @@ public class GitHub {
                 e.printStackTrace();
             }
         }
-        if(type.length() > 0){
+        if(type.length() == 0){
             return Utils.formResponse("You should not be here, SCRAM!", 403);
         }else{
             return Utils.formResponse("Got it GitHub, Thanks!");

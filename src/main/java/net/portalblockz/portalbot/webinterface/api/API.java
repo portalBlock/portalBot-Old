@@ -26,7 +26,14 @@ public class API {
     @GET
     @Path("warns")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response get() {
+    public Response getWarns() {
         return Utils.formResponse(SmartListener.getJSONInfo());
+    }
+
+    @GET
+    @Path("networks")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getNetworks(){
+        return Utils.formResponse(Utils.getJSONServers());
     }
 }

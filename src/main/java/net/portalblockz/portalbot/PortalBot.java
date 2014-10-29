@@ -171,6 +171,7 @@ public class PortalBot {
                 BASE + ".git"
         };
         PackagesResourceConfig resourceConfig = new PackagesResourceConfig(packs);
+        resourceConfig.getContainerResponseFilters().add(new CrossDomainFilter());
         return HttpServerFactory.create(UriBuilder.fromUri("http://" + InetAddress.getLocalHost().getCanonicalHostName() + "/").port(5001).build(), resourceConfig);
     }
 

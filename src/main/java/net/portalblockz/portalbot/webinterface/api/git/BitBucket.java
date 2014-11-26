@@ -28,7 +28,7 @@ public class BitBucket {
         if(body == null){
             return Utils.formResponse("You should not be here, SCRAM!", 400);
         }
-        new BitBucketPushEvent().handle(body);
+        new BitBucketPushEvent().handle(body.replaceFirst("payload=", ""));
         return Utils.formResponse("Got it BitBucket, Thanks!");
     }
 

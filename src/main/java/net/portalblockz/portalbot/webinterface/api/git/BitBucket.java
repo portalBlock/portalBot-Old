@@ -15,6 +15,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 
 /**
  * Created by portalBlock on 11/26/2014.
@@ -28,7 +30,11 @@ public class BitBucket {
         if(body == null){
             return Utils.formResponse("You should not be here, SCRAM!", 400);
         }
-        new BitBucketPushEvent().handle(body.replaceFirst("payload=", ""));
+        try{
+            new BitBucketPushEvent().handle(URLDecoder.decode(body.replaceFirst("payload=", ""), "UTF-8"));
+        }catch (UnsupportedEncodingException e){
+            e.printStackTrace();
+        }
         return Utils.formResponse("Got it BitBucket, Thanks!");
     }
 

@@ -29,6 +29,7 @@ public class JSONConfigManager {
     private JSONObject configObject;
     private List<Server> serverList = new ArrayList<>();
     private Map<String, List<String>> repoMap = new HashMap<>();
+    private Map<String, String> repoDispNames = new HashMap<>();
     private List<String> blacklistWords = new ArrayList<>();
     private static JSONConfigManager instance;
 
@@ -100,15 +101,22 @@ public class JSONConfigManager {
             for(int i = 0; i < repoArray.length(); i++){
                 JSONObject repoData = repoArray.optJSONObject(i);
                 if(repoData != null){
-                    String name = repoData.getString("name").toLowerCase();
+                    String name = repoData.getString("name");
+                    String dispName = repoData.optString("dispName");
+                    dispName = (dispName == null) ? name : dispName;
                     List<String> repoChannels = new ArrayList<>();
                     for(int n = 0; n < repoData.getJSONArray("channels").length(); n++){
                         repoChannels.add(repoData.getJSONArray("channels").getString(n).toLowerCase());
                     }
-                    repoMap.put(name, repoChannels);
+                    repoMap.put(name.toLowerCase(), repoChannels);
+                    repoDispNames.put(name.toLowerCase(), dispName);
                 }
             }
         }
+    }
+
+    public String getRepoDispName(String name){
+        return repoDispNames.get(name.toLowerCase());
     }
 
     public List<String> getChannelsForRepo(String repoName){

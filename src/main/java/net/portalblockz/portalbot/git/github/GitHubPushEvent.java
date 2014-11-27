@@ -40,6 +40,7 @@ public class GitHubPushEvent extends IGitEvent {
         JSONObject object = new JSONObject(body);
         JSONObject array;
         String msg, name, repo;
+        String disp = null;
         name = Colors.RED+"An internal error has occurred and the author of this push was not readable.";
         msg = Colors.RED+"An internal error has occurred and the message of this push was not readable.";
         repo = Colors.RED+"An internal error has occurred and the repository name of this push was not readable.";
@@ -53,8 +54,9 @@ public class GitHubPushEvent extends IGitEvent {
         JSONObject repoJ = object.optJSONObject("repository");
         if(repoJ != null){
             repo = repoJ.getString("name");
+            disp = JSONConfigManager.getInstance().getRepoDispName(repo);
         }
-        String totMsg = String.format(Colors.BLACK+"["+Colors.PURPLE+"%s"+Colors.BLACK+"] "+Colors.LIGHT_GRAY+"%s"+Colors.NORMAL+" has pushed: "+Colors.CYAN+"%s", repo, name, msg);
+        String totMsg = String.format(Colors.BLACK+"["+Colors.PURPLE+"%s"+Colors.BLACK+"] "+Colors.LIGHT_GRAY+"%s"+Colors.NORMAL+" has pushed: "+Colors.CYAN+"%s", (disp == null ? repo : disp), name, msg);
         //PortalBot.getInstance().globalSpeak(totMsg);
         PortalBot.getInstance().sayInChannels(totMsg, JSONConfigManager.getInstance().getChannelsForRepo(repo));
     }

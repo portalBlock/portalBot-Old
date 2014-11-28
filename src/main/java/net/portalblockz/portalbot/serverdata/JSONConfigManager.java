@@ -103,7 +103,7 @@ public class JSONConfigManager {
                 if(repoData != null){
                     String name = repoData.getString("name");
                     String dispName = repoData.optString("dispName");
-                    dispName = (dispName == null) ? name : dispName;
+                    dispName = (dispName == null || dispName.length() < 1) ? name : dispName;
                     List<String> repoChannels = new ArrayList<>();
                     for(int n = 0; n < repoData.getJSONArray("channels").length(); n++){
                         repoChannels.add(repoData.getJSONArray("channels").getString(n).toLowerCase());

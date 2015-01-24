@@ -58,6 +58,9 @@ public class GitHubPushEvent extends IGitEvent {
         }
         String totMsg = String.format(Colors.BLACK+"["+Colors.PURPLE+"%s"+Colors.BLACK+"] "+Colors.LIGHT_GRAY+"%s"+Colors.NORMAL+" has pushed: "+Colors.CYAN+"%s", (disp == null ? repo : disp), name, msg);
         //PortalBot.getInstance().globalSpeak(totMsg);
+        if(msg.startsWith("**")){
+            return;
+        }
         PortalBot.getInstance().sayInChannels(totMsg, JSONConfigManager.getInstance().getChannelsForRepo(repo));
     }
 

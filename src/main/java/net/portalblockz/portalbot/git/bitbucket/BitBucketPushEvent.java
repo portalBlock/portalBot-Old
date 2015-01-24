@@ -43,6 +43,9 @@ public class BitBucketPushEvent extends IGitEvent {
         String totMsg = String.format(Colors.BLACK+"["+Colors.PURPLE+"%s"+Colors.BLACK+"] "+Colors.LIGHT_GRAY+"%s"+Colors.NORMAL+" has pushed: "+
                 Colors.CYAN+"%s " + Colors.BLACK+"%s", disp, name, msg, shortUrl);
         //PortalBot.getInstance().globalSpeak(totMsg);
+        if(msg.startsWith("**")){
+            return;
+        }
         PortalBot.getInstance().sayInChannels(totMsg, JSONConfigManager.getInstance().getChannelsForRepo(repo));
         PortalBot.getInstance().sayInChannels(shortUrl, JSONConfigManager.getInstance().getChannelsForRepo(repo));
     }
